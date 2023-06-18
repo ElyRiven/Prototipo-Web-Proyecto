@@ -21,7 +21,3 @@ def checkRole(user):
         return user.rol_code.rol_code == adminRole.rol_code
     except Role.DoesNotExist:
         return None
-
-#Authentication Exceptions
-class UserLoginError(Exception):
-    pass

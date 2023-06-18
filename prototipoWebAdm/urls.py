@@ -18,12 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
 from users import views
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', lambda request: redirect('login/')),
-    path('login/', views.login),
-    path('users/', views.usersModule, name='users')
+    path('login/', views.login, name='login'),
+    path('users/<int:userId>/', views.usersModule, name='users')
 ]

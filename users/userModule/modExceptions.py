@@ -1,0 +1,2 @@
+class userModuleError(Exception):
+    pass

@@ -49,7 +49,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -87,14 +87,6 @@
                         <!-- ============================================================== -->
                         <!-- Search -->
                         <!-- ============================================================== -->
-                        <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark"
-                                href="javascript:void(0)"><i class="mdi mdi-magnify me-1"></i> <span
-                                    class="font-16">Search</span></a>
-                            <form class="app-search position-absolute">
-                                <input type="text" class="form-control" placeholder="Search &amp; enter"> <a
-                                    class="srh-btn"><i class="mdi mdi-window-close"></i></a>
-                            </form>
-                        </li>
                     </ul>
                     <!-- ============================================================== -->
                     <!-- Right side toggle and nav items -->
@@ -103,22 +95,11 @@
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#"
-                                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{% static '/assets/images/users/profile.png' %}" alt="user"
-                                    class="rounded-circle" width="31">
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end user-dd animated"
-                                aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i>
-                                    My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i>
-                                    My Balance</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i>
-                                    Inbox</a>
-                            </ul>
-                        </li>
+                        <h2 style="text-align: right; padding-right: 25px; padding-top: 5px;">{{ user.use_firstname }} {{ user.use_lastname }}</h2>
+                        <div class="text-end upgrade-btn">
+                            <a href="{% url 'login' %}"
+                                class="btn btn-primary text-white">SALIR</a>
+                        </div>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -134,12 +115,12 @@
         <!-- ============================================================== -->
         <aside class="left-sidebar" data-sidebarbg="skin6">
             <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
+            <div class="scroll-sidebar" style="padding-top: 20px;">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="index.html" aria-expanded="false"><i class="mdi mdi-account"></i><span
+                                href="{% url 'users' userId=user.use_code %}" aria-expanded="false"><i class="mdi mdi-account"></i><span
                                     class="hide-menu">Usuarios</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="pages-profile.html" aria-expanded="false"><i
@@ -171,63 +152,9 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 d-flex align-items-center">
-                                <li class="breadcrumb-item"><a href="index.html" class="link"><i
-                                            class="mdi mdi-home-outline fs-4"></i></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Starter Page</li>
-                            </ol>
-                        </nav>
-                        <h1 class="mb-0 fw-bold">Starter Page</h1>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-end upgrade-btn">
-                            <a href="https://www.wrappixel.com/templates/flexy-bootstrap-admin-template/"
-                                class="btn btn-primary text-white" target="_blank">Upgrade to Pro</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
-                {% block content %}
+            {% block content %}
 
-                {% endblock %}
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                All Rights Reserved by Flexy Admin. Designed and Developed by <a
-                    href="https://www.wrappixel.com">WrapPixel</a>.
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
+            {% endblock %}            
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->

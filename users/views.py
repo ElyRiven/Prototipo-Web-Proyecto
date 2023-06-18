@@ -1,8 +1,9 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from users.models import User, Role
-from users.authentication import utils
+from users.authentication import utils, authExceptions
+from users.userModule import queries, modExceptions
+from django.urls import reverse
 
 def login(request):
     if request.method == 'POST':
@@ -13,19 +14,35 @@ def login(request):
             if user:
                 if utils.checkPassword(user, password):
                     if utils.checkRole(user):
-                        return redirect('users')
+                        userId = user.use_code
+                        url = reverse('users', kwargs={'userId': userId})
+                        return redirect(url)
                     else:
                         return render(request, 'login.html', {'error': 'Usuario no autorizado'})
                 else:
                     return render(request, 'login.html', {'error': 'Contraseña Incorrecta'})
             else:
                 return render(request, 'login.html', {'error': 'Usuario Incorrecto'})
-        except utils.UserLoginError:
+        except authExceptions.userLoginError:
             return render(request, 'login.html', {'error': 'Error al iniciar sesión'})
     else:
         return render(request, 'login.html')
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def usersModule(request):
-    return render(request, 'users.html')
+def usersModule(request, userId):
+    try:
+        user = queries.getUserById(userId)
+        usersList = queries.getUsers()
+        return render(request, 'users.html', {
+            'user': user,
+            'usersList': usersList,
+            'module': 'Usuarios',
+            'title': 'Listado de Usuarios',
+            'buttonAddUser': 'Agregar Usuario',
+            'buttonManageRoles': 'Administrar Roles',
+            })        
+    except modExceptions.userModuleError:        
+        return render(request, 'users.html', {
+            'user': user,
+            'error': 'Error al cargar el módulo de usuarios',
+            'module': 'Usuarios',
+            'title': 'Listado de Usuarios'})

@@ -73,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'prototipoWebAdm.wsgi.application'
 
+"""
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -87,6 +88,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+"""
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
