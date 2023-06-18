@@ -12,14 +12,6 @@
             </nav>
             <h1 class="mb-0 fw-bold">{{ title }}</h1>
         </div>
-        <div class="col-6">
-            <div class="text-end upgrade-btn">
-                <a href="{% url 'roles' userId=user.use_code %}"
-                    class="btn btn-primary text-white">{{ buttonManageRoles }}</a>
-                <a href="#"
-                    class="btn btn-primary text-white" target="_blank">{{ buttonAddUser }}</a>
-            </div>
-        </div>
     </div>
 </div>
 <h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
@@ -39,40 +31,22 @@
                 <!-- div class="card-body"-->
                     <!-- Possible Title here, otherwise just erase the div tag -->
                 <!--/div-->
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                            <tr class="table-primary">
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Cédula</th>
-                                <th scope="col">Telefono</th>
-                                <th scope="col">Puntos</th>
-                                <th scope="col">Rol</th>
-                                <th scope="col">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for user in usersList %}
-                            <tr class="text-center">
-                                <td>{{ user.use_firstname|title }}</td>
-                                <td>{{ user.use_lastname|title }}</td>
-                                <td>{{ user.use_email.lower }}</td>
-                                <td>{{ user.use_idnumber }}</td>
-                                <td>{{ user.use_phonenumber }}</td>
-                                <td>{{ user.use_points }}</td>
-                                <td>{{ user.rol_code.rol_name|title }}</td>
-                                <td>
-                                    <div>
-                                        <a href="#" class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                        <a href="#" class="btn btn-danger mdi mdi-delete-circle"></a>
-                                    </div>                                    
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <form class="form-horizontal form-material mx-2" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-md-12">Nombre</label>
+                            <div class="col-md-12">
+                                <input name="roleName" type="text" placeholder="Nombre Rol"
+                                    class="form-control form-control-line">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>        

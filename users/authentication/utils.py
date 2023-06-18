@@ -10,7 +10,6 @@ def getUserByEmail(email):
 #Check password with hash pending
 def checkPassword(user, password):
     try:
-        print(user.use_password)
         return user.use_password == password
     except User.PasswordDoesNotExist:
         return None

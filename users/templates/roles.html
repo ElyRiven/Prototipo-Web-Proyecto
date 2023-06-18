@@ -14,10 +14,8 @@
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'roles' userId=user.use_code %}"
-                    class="btn btn-primary text-white">{{ buttonManageRoles }}</a>
-                <a href="#"
-                    class="btn btn-primary text-white" target="_blank">{{ buttonAddUser }}</a>
+                <a href="{% url 'newRole' userId=user.use_code %}"
+                    class="btn btn-primary text-white">{{ buttonAddRole }}</a>                
             </div>
         </div>
     </div>
@@ -44,28 +42,16 @@
                         <thead class="text-center">
                             <tr class="table-primary">
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Cédula</th>
-                                <th scope="col">Telefono</th>
-                                <th scope="col">Puntos</th>
-                                <th scope="col">Rol</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in usersList %}
+                            {% for role in rolesList %}
                             <tr class="text-center">
-                                <td>{{ user.use_firstname|title }}</td>
-                                <td>{{ user.use_lastname|title }}</td>
-                                <td>{{ user.use_email.lower }}</td>
-                                <td>{{ user.use_idnumber }}</td>
-                                <td>{{ user.use_phonenumber }}</td>
-                                <td>{{ user.use_points }}</td>
-                                <td>{{ user.rol_code.rol_name|title }}</td>
+                                <td>{{ role.rol_name|title }}</td>
                                 <td>
                                     <div>
-                                        <a href="#" class="btn btn-primary mdi mdi-pencil-circle"></a>
+                                        <a href="{% url 'updateRole' userId=user.use_code roleId=role.rol_code %}" class="btn btn-primary mdi mdi-pencil-circle"></a>
                                         <a href="#" class="btn btn-danger mdi mdi-delete-circle"></a>
                                     </div>                                    
                                 </td>

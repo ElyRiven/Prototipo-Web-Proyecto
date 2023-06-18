@@ -22,5 +22,8 @@ from users import views
 urlpatterns = [
     path('', lambda request: redirect('login/')),
     path('login/', views.login, name='login'),
-    path('users/<int:userId>/', views.usersModule, name='users')
+    path('users/<int:userId>/', views.usersModule, name='users'),
+    path('users/<int:userId>/roles/', views.rolesModule, name='roles'),
+    path('users/<int:userId>/roles/newRole/', views.rolesModuleAddRole, name='newRole'),
+    path('users/<int:userId>/roles/newRole/<int:roleId>/', views.rolesModuleEditRole, name='updateRole')
 ]
