@@ -46,3 +46,12 @@ def updateRole(roleId, roleName):
         return True
     except Role.DoesNotExist:
         return None
+    
+#Delete Role
+def deleteRole(roleId):
+    try:
+        role = Role.objects.get(rol_code=roleId)
+        role.delete()
+        return True
+    except Role.DoesNotExist:
+        return None

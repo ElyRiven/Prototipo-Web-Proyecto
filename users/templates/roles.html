@@ -5,8 +5,7 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i
-                                class="mdi mdi-account"></i></a></li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-account"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ module }}</li>
                 </ol>
             </nav>
@@ -14,8 +13,7 @@
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'newRole' userId=user.use_code %}"
-                    class="btn btn-primary text-white">{{ buttonAddRole }}</a>                
+                <a href="{% url 'newRole' userId=user.use_code %}" class="btn btn-primary text-white">{{ buttonAddRole }}</a>
             </div>
         </div>
     </div>
@@ -35,7 +33,7 @@
         <div class="col-12">
             <div class="card">
                 <!-- div class="card-body"-->
-                    <!-- Possible Title here, otherwise just erase the div tag -->
+                <!-- Possible Title here, otherwise just erase the div tag -->
                 <!--/div-->
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -51,9 +49,12 @@
                                 <td>{{ role.rol_name|title }}</td>
                                 <td>
                                     <div>
-                                        <a href="{% url 'updateRole' userId=user.use_code roleId=role.rol_code %}" class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                        <a href="#" class="btn btn-danger mdi mdi-delete-circle"></a>
-                                    </div>                                    
+                                        <a href="{% url 'updateRole' userId=user.use_code roleId=role.rol_code %}"
+                                            class="btn btn-primary mdi mdi-pencil-circle"></a>
+                                        <a href="{% url 'deleteRole' userId=user.use_code roleId=role.rol_code %}"
+                                            class="btn btn-danger mdi mdi-delete-circle"
+                                            onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -61,7 +62,7 @@
                     </table>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- End PAge Content -->

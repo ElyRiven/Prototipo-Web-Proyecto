@@ -125,3 +125,16 @@ def rolesModuleEditRole(request, userId, roleId):
                 'error': 'Error al cargar la interfaz de edición de roles',
                 'module': 'Roles',
                 'title': 'Actualizar Rol'})
+
+def rolesModuleDeleteRole(request, userId, roleId):    
+    try:
+        user = queries.getUserById(userId)
+        queries.deleteRole(roleId)
+        url = reverse('roles', kwargs={'userId': userId})
+        return redirect(url)
+    except modExceptions.roleModuleError:            
+        return render(request, 'roles.html', {
+            'user': user,
+            'error': 'Error al eliminar el rol',
+            'module': 'Roles',
+            'title': 'Listado de Roles'})

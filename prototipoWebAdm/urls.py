@@ -25,5 +25,6 @@ urlpatterns = [
     path('users/<int:userId>/', views.usersModule, name='users'),
     path('users/<int:userId>/roles/', views.rolesModule, name='roles'),
     path('users/<int:userId>/roles/newRole/', views.rolesModuleAddRole, name='newRole'),
-    path('users/<int:userId>/roles/newRole/<int:roleId>/', views.rolesModuleEditRole, name='updateRole')
+    path('users/<int:userId>/roles/updateRole/<int:roleId>/', views.rolesModuleEditRole, name='updateRole'),
+    path('users/<int:userId>/roles/deleteRole/<int:roleId>/', views.rolesModuleDeleteRole, name='deleteRole')
 ]
