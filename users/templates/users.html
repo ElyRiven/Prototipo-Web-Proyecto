@@ -5,8 +5,7 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i
-                                class="mdi mdi-account"></i></a></li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-account"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ module }}</li>
                 </ol>
             </nav>
@@ -14,10 +13,8 @@
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'roles' userId=user.use_code %}"
-                    class="btn btn-primary text-white">{{ buttonManageRoles }}</a>
-                <a href="#"
-                    class="btn btn-primary text-white" target="_blank">{{ buttonAddUser }}</a>
+                <a href="{% url 'roles' userId=user.use_code %}" class="btn btn-primary text-white">{{ buttonManageRoles }}</a>
+                <a href="{% url 'newUser' userId=user.use_code %}" class="btn btn-primary text-white">{{ buttonAddUser }}</a>
             </div>
         </div>
     </div>
@@ -37,7 +34,7 @@
         <div class="col-12">
             <div class="card">
                 <!-- div class="card-body"-->
-                    <!-- Possible Title here, otherwise just erase the div tag -->
+                <!-- Possible Title here, otherwise just erase the div tag -->
                 <!--/div-->
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -54,20 +51,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in usersList %}
+                            {% for userL in usersList %}
                             <tr class="text-center">
-                                <td>{{ user.use_firstname|title }}</td>
-                                <td>{{ user.use_lastname|title }}</td>
-                                <td>{{ user.use_email.lower }}</td>
-                                <td>{{ user.use_idnumber }}</td>
-                                <td>{{ user.use_phonenumber }}</td>
-                                <td>{{ user.use_points }}</td>
-                                <td>{{ user.rol_code.rol_name|title }}</td>
+                                <td>{{ userL.use_firstname|title }}</td>
+                                <td>{{ userL.use_lastname|title }}</td>
+                                <td>{{ userL.use_email.lower }}</td>
+                                <td>{{ userL.use_idnumber }}</td>
+                                <td>{{ userL.use_phonenumber }}</td>
+                                <td>{{ userL.use_points }}</td>
+                                <td>{{ userL.rol_code.rol_name|title }}</td>
                                 <td>
                                     <div>
-                                        <a href="#" class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                        <a href="#" class="btn btn-danger mdi mdi-delete-circle"></a>
-                                    </div>                                    
+                                        <a href="{% url 'updateUser' userId=user.use_code userToEditId=userL.use_code %}"
+                                            class="btn btn-primary mdi mdi-pencil-circle"></a>
+                                        <a href="{% url 'deleteUser' userId=user.use_code userToDeleteId=userL.use_code %}"
+                                            class="btn btn-danger mdi mdi-delete-circle"
+                                            onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -75,7 +75,7 @@
                     </table>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- End PAge Content -->

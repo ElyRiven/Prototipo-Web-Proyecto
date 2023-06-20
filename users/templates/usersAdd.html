@@ -36,8 +36,56 @@
                         <div class="form-group">
                             <label class="col-md-12">Nombre</label>
                             <div class="col-md-12">
-                                <input name="roleName" type="text" class="form-control form-control-line" maxlength="15"
-                                    required value="{{ role.rol_name|title}}">
+                                <input name="userFirstName" type="text" placeholder="Nombre Usuario"
+                                    class="form-control form-control-line" maxlength="50" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Apellido</label>
+                            <div class="col-md-12">
+                                <input name="userLastName" type="text" placeholder="Apellido Usuario"
+                                    class="form-control form-control-line" maxlength="50" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Correo</label>
+                            <div class="col-md-12">
+                                <input name="userEmail" type="email" placeholder="example@gmail.com"
+                                    class="form-control form-control-line" maxlength="50" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Identificacion</label>
+                            <div class="col-md-12">
+                                <input name="userIdNumber" type="text" placeholder="Cedula"
+                                    class="form-control form-control-line" pattern="[0-9]+"
+                                    title="Por favor, ingresar solo números" maxlength="10" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Telefono</label>
+                            <div class="col-md-12">
+                                <input name="userPhone" type="text" placeholder="Telefono Usuario"
+                                    class="form-control form-control-line" pattern="[0-9]+"
+                                    title="Por favor, ingresar solo números" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Contraseña</label>
+                            <div class="col-md-12">
+                                <input name="userPassword" type="password" placeholder="Contraseña Usuario"
+                                    class="form-control form-control-line" maxlength="100" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Rol</label>
+                            <div class="col-md-12">
+                                <select name="userRole" class="form-control form-control-line" required>
+                                    <option value="">Seleccionar Rol</option>
+                                    {% for role in rolesList%}
+                                    <option value="{{ role.rol_code }}">{{ role.rol_name|title }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

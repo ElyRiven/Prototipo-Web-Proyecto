@@ -17,7 +17,7 @@ class User(models.Model):
     use_phonenumber = models.CharField(max_length=10, blank=True, null=True)
     use_password = models.CharField(max_length=100)
     use_preferences = models.CharField(max_length=500, blank=True, null=True)
-    use_points = models.IntegerField()
+    use_points = models.IntegerField(default=0)
     rol_code = models.ForeignKey(Role, models.DO_NOTHING, db_column='rol_code')
 
     class Meta:
@@ -32,7 +32,7 @@ class Product(models.Model):
     pro_country = models.CharField(max_length=100)
     pro_startdate = models.DateField()
     pro_enddate = models.DateField()
-    pro_state = models.CharField(max_length=15)
+    pro_state = models.CharField(max_length=15, default='SELLING')
 
     class Meta:
         managed = False
@@ -64,7 +64,7 @@ class Benefit(models.Model):
 
 class UserBenefit(models.Model):
     useben_code = models.AutoField(primary_key=True)
-    useben_state = models.CharField(max_length=10)
+    useben_state = models.CharField(max_length=10, default='INCOMPLETE')
     use_code = models.ForeignKey(User, models.DO_NOTHING, db_column='use_code')
     ben_code = models.ForeignKey(Benefit, models.DO_NOTHING, db_column='ben_code')
 
@@ -84,7 +84,7 @@ class BenefitLog(models.Model):
 
 class UserProduct(models.Model):
     usepro_code = models.AutoField(primary_key=True)
-    usepro_state = models.CharField(max_length=15)
+    usepro_state = models.CharField(max_length=15, default='PENDING')
     use_code = models.ForeignKey(User, models.DO_NOTHING, db_column='use_code')
     pro_code = models.ForeignKey(Product, models.DO_NOTHING, db_column='pro_code')
 
@@ -94,7 +94,7 @@ class UserProduct(models.Model):
 
 class Appointment(models.Model):
     app_code = models.AutoField(primary_key=True)
-    app_type = models.CharField(max_length=10)
+    app_type = models.CharField(max_length=10, default='VIRTUAL')
     app_comment = models.CharField(max_length=300, blank=True, null=True)
     use_code = models.ForeignKey('User', models.DO_NOTHING, db_column='use_code')
     pro_code = models.ForeignKey('Product', models.DO_NOTHING, db_column='pro_code')

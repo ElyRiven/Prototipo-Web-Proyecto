@@ -17,14 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
-from users import views
+from users import roleViews, userViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
-    path('login/', views.login, name='login'),
-    path('users/<int:userId>/', views.usersModule, name='users'),
-    path('users/<int:userId>/roles/', views.rolesModule, name='roles'),
-    path('users/<int:userId>/roles/newRole/', views.rolesModuleAddRole, name='newRole'),
-    path('users/<int:userId>/roles/updateRole/<int:roleId>/', views.rolesModuleEditRole, name='updateRole'),
-    path('users/<int:userId>/roles/deleteRole/<int:roleId>/', views.rolesModuleDeleteRole, name='deleteRole')
+    # Login URL
+    path('login/', userViews.login, name='login'),
+    # Users URLs
+    path('users/<int:userId>/', userViews.usersModule, name='users'),
+    path('users/<int:userId>/users/newUser/', userViews.addUser, name='newUser'),
+    path('users/<int:userId>/users/updateUser/<int:userToEditId>/', userViews.editUser, name='updateUser'),
+    path('users/<int:userId>/users/deleteUser/<int:userToDeleteId>/', userViews.deleteUser, name='deleteUser'),
+    # Roles URLs
+    path('users/<int:userId>/roles/', roleViews.rolesModule, name='roles'),
+    path('users/<int:userId>/roles/newRole/', roleViews.addRole, name='newRole'),
+    path('users/<int:userId>/roles/updateRole/<int:roleId>/', roleViews.editRole, name='updateRole'),
+    path('users/<int:userId>/roles/deleteRole/<int:roleId>/', roleViews.deleteRole, name='deleteRole')
 ]

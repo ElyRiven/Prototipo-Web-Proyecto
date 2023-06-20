@@ -75,7 +75,7 @@
                             <div class="card-body d-flex justify-content-center">
                                 <form class="form-horizontal form-material mx-2" action="" method="post">
                                     {% csrf_token %}
-                                    {{ error }}
+                                    <h5 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h5>
                                     <div class="form-group">
                                         <label class="col-md-12">Usuario</label>
                                         <div class="col-md-12">

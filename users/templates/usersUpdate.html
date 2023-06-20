@@ -1,0 +1,138 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-account"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ module }}</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">{{ title }}</h1>
+        </div>
+    </div>
+</div>
+<h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- div class="card-body"-->
+                <!-- Possible Title here, otherwise just erase the div tag -->
+                <!--/div-->
+                <div class="card-body">
+                    <form class="form-horizontal form-material mx-2" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-md-12">Nombre</label>
+                            <div class="col-md-12">
+                                <input name="userFirstName" type="text" placeholder="Nombre Usuario"
+                                    class="form-control form-control-line" maxlength="50"
+                                    value="{{ userToEdit.use_firstname|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Apellido</label>
+                            <div class="col-md-12">
+                                <input name="userLastName" type="text" placeholder="Apellido Usuario"
+                                    class="form-control form-control-line" maxlength="50"
+                                    value="{{ userToEdit.use_lastname|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Correo</label>
+                            <div class="col-md-12">
+                                <input name="userEmail" type="email" placeholder="example@gmail.com"
+                                    class="form-control form-control-line" maxlength="50"
+                                    value="{{ userToEdit.use_email|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Identificacion</label>
+                            <div class="col-md-12">
+                                <input name="userIdNumber" type="text" placeholder="Cedula"
+                                    class="form-control form-control-line" pattern="[0-9]+"
+                                    title="Por favor, ingresar solo números" maxlength="10"
+                                    value="{{ userToEdit.use_idnumber|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Telefono</label>
+                            <div class="col-md-12">
+                                <input name="userPhone" type="text" placeholder="Telefono Usuario"
+                                    class="form-control form-control-line" pattern="[0-9]+"
+                                    title="Por favor, ingresar solo números"
+                                    value="{{ userToEdit.use_phonenumber|title }}" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Contraseña</label>
+                            <div class="col-md-12">
+                                <input name="userPassword" type="password" placeholder="Contraseña Usuario"
+                                    class="form-control form-control-line"
+                                    value="{{ userToEdit.use_password|title }}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Puntos</label>
+                            <div class="col-md-12">
+                                <input name="userPoints" type="number" placeholder="Puntos de usuario"
+                                    class="form-control form-control-line" min="0"
+                                    value="{{ userToEdit.use_points }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Rol</label>
+                            <div class="col-md-12">
+                                <select name="userRole" class="form-control form-control-line" required>
+                                    <option value="">Seleccionar Rol</option>
+                                    {% for role in rolesList%}
+                                        <option value="{{ role.rol_code }}" {% if role.rol_code == userToEdit.rol_code.rol_code %}selected{% endif %}>{{ role.rol_name|title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by TravelHunter.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+{% endblock %}

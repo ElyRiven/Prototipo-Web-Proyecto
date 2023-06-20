@@ -92,10 +92,10 @@
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
-                        <h2 style="text-align: right; padding-right: 25px; padding-top: 5px;">{{ user.use_firstname }} {{ user.use_lastname }}</h2>
+                        <h2 style="text-align: right; padding-right: 20px; padding-top: 5px;">{{ user.use_firstname|title }} {{ user.use_lastname|title }}</h2>
                         <div class="text-end upgrade-btn">
                             <a href="{% url 'login' %}"
-                                class="btn btn-primary text-white">SALIR</a>
+                                class="btn btn-primary text-white">Salir</a>
                         </div>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
