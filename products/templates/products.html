@@ -1,0 +1,103 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-buffer"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ module }}</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">{{ title }}</h1>
+        </div>
+        <div class="col-6">
+            <div class="text-end upgrade-btn">
+                <a href="{% url 'newUser' userId=user.use_code %}"
+                class="btn btn-primary text-white">{{ buttonAddProduct }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- div class="card-body"-->
+                <!-- Possible Title here, otherwise just erase the div tag -->
+                <!--/div-->
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr class="table-primary">
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Pais</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Fecha Fin</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in productsList %}
+                            <tr class="text-center">
+                                <td>{{ product.pro_name|title }}</td>
+                                <td>$ {{ product.pro_price }}</td>
+                                <td>{{ product.pro_description|title }}</td>
+                                <td>{{ product.pro_country|title }}</td>
+                                <td>{{ product.pro_startdate|date:'Y-m-d' }}</td>
+                                <td>{{ product.pro_enddate|date:'Y-m-d' }}</td>
+                                <td>{{ product.pro_state|title }}</td>
+                                <td>
+                                    <div>
+                                        <a href="#"
+                                            class="btn btn-primary mdi mdi-pencil-circle"></a>
+                                        <a href="#"
+                                            class="btn btn-danger mdi mdi-delete-circle"
+                                            onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by TravelHunter.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+{% endblock %}

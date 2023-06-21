@@ -1,0 +1,2 @@
+class productModuleError(Exception):
+    pass

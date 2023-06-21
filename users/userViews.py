@@ -3,6 +3,7 @@ from users.models import User, Role
 from users.authentication import utils, authExceptions
 from users.utilsModule import queries, modExceptions
 from django.urls import reverse
+from datetime import datetime
 
 def login(request):
     if request.method == 'POST':
@@ -100,6 +101,10 @@ def editUser(request, userId, userToEditId):
         user.use_idnumber = request.POST['userIdNumber']
         user.use_phonenumber = request.POST['userPhone']
         user.use_points = request.POST['userPoints']
+
+        #Update the first login Date
+        newFirstLoginDate = request.POST['userFirstLogin']
+        user.use_firstlogin = datetime.strptime(newFirstLoginDate, '%Y-%m-%d').date()
 
         #Get Role by Id
         roleAssing = request.POST['userRole']

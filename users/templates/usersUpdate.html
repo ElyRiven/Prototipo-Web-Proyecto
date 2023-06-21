@@ -92,6 +92,14 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-md-12">Fecha Primer Inicio de Sesion</label>
+                            <div class="col-md-12">
+                                <input name="userFirstLogin" type="date"
+                                    class="form-control form-control-line" 
+                                    value="{{ userToEdit.use_firstlogin|date:'Y-m-d' }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-12">Rol</label>
                             <div class="col-md-12">
                                 <select name="userRole" class="form-control form-control-line" required>
