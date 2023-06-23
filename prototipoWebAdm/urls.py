@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
 from users import roleViews, userViews
-from products import productViews
+from products import productViews, placeViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
@@ -37,4 +37,10 @@ urlpatterns = [
     # Products URLs
     path('products/<int:userId>/', productViews.productsModule, name='products'),
     path('products/<int:userId>/newProduct/', productViews.addProduct, name='newProduct'),
+    path('products/<int:userId>/updateProduct/<int:productId>', productViews.editProduct, name='updateProduct'),
+    path('products/<int:userId>/deleteProduct/<int:productId>', productViews.deleteProduct, name='deleteProduct'),
+    # Places URLs
+    path('products/<int:userId>/places/<int:productId>/', placeViews.placeModule, name='places'),
+    path('products/<int:userId>/newPlace/<int:productId>/', placeViews.addPlace, name='newPlace'),
+    path('products/<int:userId>/updatePlace/<int:productId>/<int:placeId>/', placeViews.editPlace, name='updatePlace'),
 ]

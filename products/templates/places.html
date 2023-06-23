@@ -5,16 +5,16 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-buffer"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Productos</li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-view-list"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Lugares</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Listado de Productos</h1>
+            <h1 class="mb-0 fw-bold">Listado de Lugares</h1>
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'newProduct' userId=user.use_code %}"
-                class="btn btn-primary text-white">Agregar Producto</a>
+                <a href="{% url 'newPlace' userId=user.use_code productId=product.pro_code %}"
+                class="btn btn-primary text-white">Agregar Lugar</a>
             </div>
         </div>
     </div>
@@ -34,41 +34,37 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <!-- div class="card-body"-->
-                <!-- Possible Title here, otherwise just erase the div tag -->
-                <!--/div-->
+            <div class="card-body">
+                <h3 class="mb-0 fw-bold">Producto: {{ product.pro_name|title }}</h3>
+            </div>
+            <div class="card">                
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="text-center">
                             <tr class="table-primary">
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Precio</th>
                                 <th scope="col">Descripcion</th>
-                                <th scope="col">Pais</th>
+                                <th scope="col">Actividades</th>
+                                <th scope="col">Ciudad</th>
                                 <th scope="col">Fecha Inicio</th>
                                 <th scope="col">Fecha Fin</th>
-                                <th scope="col">Estado</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for product in productsList %}
+                            {% for place in placesList %}
                             <tr class="text-center">
-                                <td>{{ product.pro_name|title }}</td>
-                                <td>$ {{ product.pro_price }}</td>
-                                <td style="max-width: 200px;">{{ product.pro_description|title }}</td>
-                                <td>{{ product.pro_country|title }}</td>
-                                <td>{{ product.pro_startdate|date:'Y-m-d' }}</td>
-                                <td>{{ product.pro_enddate|date:'Y-m-d' }}</td>
-                                <td>{{ product.pro_state|title }}</td>
+                                <td>{{ place.pla_name|title }}</td>
+                                <td style="max-width: 200px;">{{ place.pla_description|title }}</td>
+                                <td>{{ place.pla_activity|title }}</td>
+                                <td>{{ place.pla_city|title }}</td>
+                                <td>{{ place.pla_startdate|date:'Y-m-d' }}</td>
+                                <td>{{ place.pla_enddate|date:'Y-m-d' }}</td>
                                 <td>
                                     <div>
-                                        <a href="{% url 'places' userId=user.use_code productId=product.pro_code %}"
-                                            class="btn btn-primary mdi mdi-view-list">Itinerario</a>
-                                        <a href="{% url 'updateProduct' userId=user.use_code productId=product.pro_code %}"
+                                        <a href="{% url 'updatePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"
                                             class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                        <a href="{% url 'deleteProduct' userId=user.use_code productId=product.pro_code %}"
+                                        <a href="#"
                                             class="btn btn-danger mdi mdi-delete-circle"
                                             onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
                                     </div>

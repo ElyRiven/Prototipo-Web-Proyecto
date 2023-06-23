@@ -1,0 +1,119 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-view-list"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Lugares</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">Nuevo Lugar</h1>
+        </div>
+    </div>
+</div>
+{% if error %}
+<h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+{% endif %}
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card-body">
+                <h3 class="mb-0 fw-bold">Producto: {{ product.pro_name|title }}</h3>
+            </div>
+            <div class="card">                
+                <div class="card-body">
+                    <form class="form-horizontal form-material mx-2" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-md-12">Nombre</label>
+                            <div class="col-md-12">
+                                <input name="placeName" type="text" placeholder="Nombre Lugar"
+                                    class="form-control form-control-line" maxlength="75" 
+                                    value="{{ place.pla_name|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Descripcion</label>
+                            <div class="col-md-12">
+                                <input name="placeDescription" type="text" placeholder="Descripcion Lugar"
+                                    class="form-control form-control-line" maxlength="500" 
+                                    value="{{ place.pla_description|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Actividad</label>
+                            <div class="col-md-12">
+                                <input name="placeActivity" type="text" placeholder="Actividades a realizar"
+                                    class="form-control form-control-line" maxlength="100" 
+                                    value="{{ place.pla_activity|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Ciudad</label>
+                            <div class="col-md-12">
+                                <input name="placeCity" type="text" placeholder="Ciudad Lugar"
+                                    class="form-control form-control-line" maxlength="50" 
+                                    value="{{ place.pla_city|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha de Inicio</label>
+                            <div class="col-md-12">
+                                <input name="placeStartDate" type="date"
+                                    class="form-control form-control-line" 
+                                    value="{{ place.pla_startdate|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha de Fin</label>
+                            <div class="col-md-12">
+                                <input name="placeEndDate" type="date"
+                                    class="form-control form-control-line" 
+                                    value="{{ place.pla_enddate|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by TravelHunter.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+{% endblock %}
