@@ -26,14 +26,15 @@ urlpatterns = [
     path('login/', userViews.login, name='login'),
     # Users URLs
     path('users/<int:userId>/', userViews.usersModule, name='users'),
-    path('users/<int:userId>/users/newUser/', userViews.addUser, name='newUser'),
-    path('users/<int:userId>/users/updateUser/<int:userToEditId>/', userViews.editUser, name='updateUser'),
-    path('users/<int:userId>/users/deleteUser/<int:userToDeleteId>/', userViews.deleteUser, name='deleteUser'),
+    path('users/<int:userId>/newUser/', userViews.addUser, name='newUser'),
+    path('users/<int:userId>/updateUser/<int:userToEditId>/', userViews.editUser, name='updateUser'),
+    path('users/<int:userId>/deleteUser/<int:userToDeleteId>/', userViews.deleteUser, name='deleteUser'),
     # Roles URLs
     path('users/<int:userId>/roles/', roleViews.rolesModule, name='roles'),
-    path('users/<int:userId>/roles/newRole/', roleViews.addRole, name='newRole'),
-    path('users/<int:userId>/roles/updateRole/<int:roleId>/', roleViews.editRole, name='updateRole'),
-    path('users/<int:userId>/roles/deleteRole/<int:roleId>/', roleViews.deleteRole, name='deleteRole'),
+    path('users/<int:userId>/newRole/', roleViews.addRole, name='newRole'),
+    path('users/<int:userId>/updateRole/<int:roleId>/', roleViews.editRole, name='updateRole'),
+    path('users/<int:userId>/deleteRole/<int:roleId>/', roleViews.deleteRole, name='deleteRole'),
     # Products URLs
-    path('products/<int:userId>/', productViews.productsModule, name='products')
+    path('products/<int:userId>/', productViews.productsModule, name='products'),
+    path('products/<int:userId>/newProduct/', productViews.addProduct, name='newProduct'),
 ]
