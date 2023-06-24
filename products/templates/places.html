@@ -64,7 +64,7 @@
                                     <div>
                                         <a href="{% url 'updatePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"
                                             class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                        <a href="#"
+                                        <a href="{% url 'deletePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"
                                             class="btn btn-danger mdi mdi-delete-circle"
                                             onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
                                     </div>

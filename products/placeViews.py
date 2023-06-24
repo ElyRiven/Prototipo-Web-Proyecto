@@ -53,7 +53,29 @@ def addPlace(request, userId, productId):
 def editPlace(request, userId, productId, placeId):
     template = 'placesUpdate.html'
     if request.method == 'POST':
-        pass
+        try:
+            user = placeQueries.getUserById(userId)
+            product = placeQueries.getProductById(productId)
+            editedPlace = placeQueries.getPlaceById(placeId)
+            startDate = datetime.strptime(request.POST['placeStartDate'], '%Y-%m-%d').date()
+            endDate = datetime.strptime(request.POST['placeEndDate'], '%Y-%m-%d').date()
+            if endDate <= startDate:
+                raise ValueError('La fecha de fin debe ser posterior a la fecha de inicio')
+            editedPlace = assignPlace(editedPlace,
+                                    request.POST['placeName'].upper(),
+                                    request.POST['placeDescription'].upper(),
+                                    request.POST['placeActivity'].upper(),
+                                    request.POST['placeCity'].upper(),
+                                    startDate,
+                                    endDate,
+                                    product)
+            placeQueries.savePlace(editedPlace)
+            url = reverse('places', kwargs={'userId': userId, 'productId': productId})
+            return redirect(url)
+        except ValueError as e:
+            return placeTemplate(request, template, user, error=str(e))
+        except modExceptions.placeModuleError as e:
+            return placeTemplate(request, template, user, error=str(e))
     else:
         try:
             user = placeQueries.getUserById(userId)
@@ -62,6 +84,17 @@ def editPlace(request, userId, productId, placeId):
             return placeTemplate(request, template, user, product=product, place=place)
         except modExceptions.placeModuleError as e:
             return placeTemplate(request, template, user, error=str(e))
+
+def deletePlace(request, userId, productId, placeId):
+    template = 'places.html'
+    try:
+        user = placeQueries.getUserById(userId)
+        product = placeQueries.getProductById(productId)
+        placeQueries.deletePlace(placeId)
+        url = reverse('places', kwargs={'userId': userId, 'productId': productId})
+        return redirect(url)
+    except modExceptions.placeModuleError as e:
+        return placeTemplate(request, template, user, product=product, error=str(e))
 
 def assignPlace(place, plaName, plaDescription, plaActivity, plaCity, placeStartDate, placeEndDate, product):
     place.pla_name = plaName

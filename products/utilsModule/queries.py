@@ -63,3 +63,12 @@ def savePlace(newPlace):
         return True
     except IntegrityError:
         raise modExceptions.placeModuleError('Error al registrar el lugar')
+
+# Delete a Place
+def deletePlace(placeId):
+    try:
+        place = getPlaceById(placeId)
+        place.delete()
+        return True
+    except IntegrityError:
+        raise modExceptions.placeModuleError('No se puede eliminar el lugar ya que se encuentra asignado a un producto')

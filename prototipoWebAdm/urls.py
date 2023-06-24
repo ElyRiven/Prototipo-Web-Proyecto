@@ -43,4 +43,5 @@ urlpatterns = [
     path('products/<int:userId>/places/<int:productId>/', placeViews.placeModule, name='places'),
     path('products/<int:userId>/newPlace/<int:productId>/', placeViews.addPlace, name='newPlace'),
     path('products/<int:userId>/updatePlace/<int:productId>/<int:placeId>/', placeViews.editPlace, name='updatePlace'),
+    path('products/<int:userId>/deletePlace/<int:productId>/<int:placeId>/', placeViews.deletePlace, name='deletePlace'),
 ]
