@@ -1,0 +1,2 @@
+class tripModuleError(Exception):
+    pass

@@ -19,6 +19,7 @@ from django.urls import path
 from django.shortcuts import redirect
 from users import roleViews, userViews
 from products import productViews, placeViews
+from trips import tripViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
@@ -44,4 +45,7 @@ urlpatterns = [
     path('products/<int:userId>/newPlace/<int:productId>/', placeViews.addPlace, name='newPlace'),
     path('products/<int:userId>/updatePlace/<int:productId>/<int:placeId>/', placeViews.editPlace, name='updatePlace'),
     path('products/<int:userId>/deletePlace/<int:productId>/<int:placeId>/', placeViews.deletePlace, name='deletePlace'),
+    # Trips URLs
+    path('trips/<int:userId>/', tripViews.tripsModule, name='trips'),
+    path('trips/<int:userId>/product/<int:productId>/', tripViews.updateTrips, name='tripsTable'),
 ]

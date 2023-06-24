@@ -1,0 +1,81 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-airplane-takeoff"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Viajes</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">Activar Producto</h1>
+        </div>
+        <div class="col-6">
+            <div class="text-end upgrade-btn">
+                <a href="#" class="btn btn-primary text-white">Listado de Usuarios</a>
+                <a href="#" class="btn btn-primary text-white">Activar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% if error %}
+<h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+{% endif %}
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="card-body">
+        <form method="post" action="{% url 'trips' userId=user.use_code %}">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <select name="productId" id="product-select" class="form-control form-control-line" style="max-width: 350px;" required>
+                    <option value="">Seleccionar Producto</option>
+                    {% for product in productsList %}
+                        <option value="{{ product.pro_code }}" {% if product.pro_code == selectedProduct %}selected{% endif %}>{{ product.pro_name|title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+    {% block table %}
+
+    {% endblock %}    
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by TravelHunter.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+<script>
+    var productSelect = document.getElementById('product-select');
+    var form = document.querySelector('form');
+    productSelect.addEventListener('change', function() {
+        form.submit();
+    });
+</script>
+{% endblock %}

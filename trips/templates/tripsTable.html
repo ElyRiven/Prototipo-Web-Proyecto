@@ -1,0 +1,27 @@
+{% extends 'trips.html' %}
+{% block table %}
+<div class="row">
+    <div class="col-12">        
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                        <tr class="table-primary">
+                            <th scope="col">Usuarios Registrados</th>
+                            <th scope="col">Estado del Producto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for userProd in userProdList %}
+                        <tr class="text-center">
+                            <td>{{ useProd.use_code.use_firstname|title }} {{ useProd.use_code.use_lastname|title }}</td>
+                            <td>{{ useProd.usepro_state|title }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
