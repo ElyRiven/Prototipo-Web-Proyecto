@@ -16,10 +16,16 @@ def getProducts():
     except Product.DoesNotExist:
         raise modExceptions.tripModuleError('No se encontraron productos registrados')
 
+# Get Product by Id
+def getProductById(productId):
+    try:
+        return Product.objects.get(pro_code=productId)
+    except Product.DoesNotExist:
+        raise modExceptions.tripModuleError('No se encontraron productos registrados')
+
 # Get all User Products by Product Id
 def userProductList(productId):
     try:
         return UserProduct.objects.filter(pro_code=productId).order_by('use_code')
     except UserProduct.DoesNotExist:
         raise modExceptions.tripModuleError('Ocurrion un error al obtener los registros')
-

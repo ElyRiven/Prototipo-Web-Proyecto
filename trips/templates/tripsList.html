@@ -9,12 +9,11 @@
                     <li class="breadcrumb-item active" aria-current="page">Viajes</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Activar Producto</h1>
+            <h1 class="mb-0 fw-bold">Listado de Usuarios</h1>
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'tripsUsersList' userId=user.use_code productId=selectedProduct %}" class="btn btn-primary text-white">Listado de Usuarios</a>
-                <a href="#" class="btn btn-primary text-white">Activar</a>
+                <a href="#" class="btn btn-primary text-white">Añadir Usuarios</a>
             </div>
         </div>
     </div>
@@ -32,28 +31,19 @@
     <!-- ============================================================== -->
     <!-- Start Page Content -->
     <!-- ============================================================== -->
-    <div class="card-body">
-        <form method="post" action="{% url 'trips' userId=user.use_code %}">
-            {% csrf_token %}
-            <div class="col-md-12">
-                <select name="productId" id="product-select" class="form-control form-control-line" style="max-width: 350px;" required>
-                    <option value="">Seleccionar Producto</option>
-                    {% for product in productsList %}
-                        <option value="{{ product.pro_code }}" {% if product.pro_code == selectedProduct %}selected{% endif %}>{{ product.pro_name|title }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </form>
-    </div>
     <div class="row">
-        <div class="col-12">        
-            <div class="card">
+        <div class="col-12">
+            <div class="card-body">
+                <h3 class="mb-0 fw-bold">Producto: {{ selectedProduct.pro_name|title }}</h3>
+            </div>
+            <div class="card">                
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="text-center">
                             <tr class="table-primary">
                                 <th scope="col">Usuarios Registrados</th>
                                 <th scope="col">Estado del Producto</th>
+                                <th scope="col">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +51,15 @@
                             <tr class="text-center">
                                 <td>{{ userProd.use_code.use_firstname|title }} {{ userProd.use_code.use_lastname|title }}</td>
                                 <td>{{ userProd.usepro_state|title }}</td>
+                                <td>
+                                    <div>
+                                        <a href="#"
+                                            class="btn btn-primary mdi mdi-pencil-circle"></a>
+                                        <a href="#"
+                                            class="btn btn-danger mdi mdi-delete-circle"
+                                            onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
+                                    </div>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -92,11 +91,4 @@
 <!-- ============================================================== -->
 <!-- End footer -->
 <!-- ============================================================== -->
-<script>
-    var productSelect = document.getElementById('product-select');
-    var form = document.querySelector('form');
-    productSelect.addEventListener('change', function() {
-        form.submit();
-    });
-</script>
 {% endblock %}
