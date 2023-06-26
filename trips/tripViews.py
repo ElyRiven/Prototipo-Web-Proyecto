@@ -38,9 +38,19 @@ def usersTrips(request, userId, productId):
     template = 'tripsList.html'
     if request.method == 'POST':
         try:
-            pass
+            user = tripQueries.getUserById(userId)
+            selectedUser = tripQueries.getUserById(request.POST['selectedUserId'])
+            selectedProduct = tripQueries.getProductById(productId)
+            userProdList = tripQueries.userProductList(productId)
+            userList = tripQueries.getUsers()
+            existingRecord = tripQueries.getUserProduct(selectedUser, productId)
+            if existingRecord:
+                raise modExceptions.tripModuleError('El usuario ya tiene asignado el producto')
+            tripAssign = assignTrip(selectedUser, selectedProduct)
+            tripQueries.saveUserProduct(tripAssign)
+            return tripsTemplate(request, template, user, userList=userList, selectedProduct=selectedProduct, userProdList=userProdList)
         except modExceptions.tripModuleError as e:
-            return tripsTemplate(request, template, user, error=str(e))
+            return tripsTemplate(request, template, user, userList=userList, selectedProduct=selectedProduct, userProdList=userProdList, error=str(e))
     else:
         try:
             user = tripQueries.getUserById(userId)
@@ -49,14 +59,22 @@ def usersTrips(request, userId, productId):
                 raise modExceptions.tripModuleError('Seleccionar un producto para ver la lista de usuarios')
             selectedProduct = tripQueries.getProductById(productId)
             userProdList = tripQueries.userProductList(productId)
-            return tripsTemplate(request, template, user, selectedProduct=selectedProduct, userProdList=userProdList)
+            userList = tripQueries.getUsers()
+            return tripsTemplate(request, template, user, userList=userList, selectedProduct=selectedProduct, userProdList=userProdList)
         except modExceptions.tripModuleError as e:
             template = 'trips.html'
             return tripsTemplate(request, template, user, selectedProduct=productId, productsList=productsList, error=str(e))
 
-def tripsTemplate(request, template, user, selectedProduct=None, productsList=None, userProdList=None, error=None):    
+def assignTrip(user, product):
+    tripAssign = UserProduct()
+    tripAssign.use_code = user
+    tripAssign.pro_code = product    
+    return tripAssign
+
+def tripsTemplate(request, template, user, userList=None, selectedProduct=None, productsList=None, userProdList=None, error=None):    
     return render(request, template, {
             'user': user,
+            'userList': userList,
             'selectedProduct': selectedProduct,
             'productsList': productsList,
             'userProdList': userProdList,

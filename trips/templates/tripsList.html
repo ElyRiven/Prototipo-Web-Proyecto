@@ -10,11 +10,7 @@
                 </ol>
             </nav>
             <h1 class="mb-0 fw-bold">Listado de Usuarios</h1>
-        </div>
-        <div class="col-6">
-            <div class="text-end upgrade-btn">
-                <a href="#" class="btn btn-primary text-white">Añadir Usuarios</a>
-            </div>
+            <h3 class="fw-bold" style="padding-top: 10px;">Producto: {{ selectedProduct.pro_name|title }}</h3>
         </div>
     </div>
 </div>
@@ -31,12 +27,23 @@
     <!-- ============================================================== -->
     <!-- Start Page Content -->
     <!-- ============================================================== -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card-body">
-                <h3 class="mb-0 fw-bold">Producto: {{ selectedProduct.pro_name|title }}</h3>
+    <div class="card-body">
+        <h3 class="mb-0 fw-bold">Seleccionar Usuarios a Añadir:</h3>
+        <form method="post" action="{% url 'tripsUsersList' userId=user.use_code productId=selectedProduct.pro_code %}">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <select name="selectedUserId" id="addUserForm" class="form-control form-control-line" style="max-width: 350px;" required>
+                    <option value="">Seleccionar Usuario</option>
+                    {% for user in userList %}
+                        <option value="{{ user.use_code }}">{{ user.use_firstname|title }} {{ user.use_lastname|title }}</option>
+                    {% endfor %}
+                </select>
             </div>
-            <div class="card">                
+        </form>
+    </div>
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="text-center">
@@ -91,4 +98,11 @@
 <!-- ============================================================== -->
 <!-- End footer -->
 <!-- ============================================================== -->
+<script>
+    var productSelect = document.getElementById('addUserForm');
+    var form = document.querySelector('form');
+    productSelect.addEventListener('change', function() {
+        form.submit();
+    });
+</script>
 {% endblock %}

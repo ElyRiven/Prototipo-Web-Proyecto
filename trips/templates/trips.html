@@ -36,7 +36,7 @@
         <form method="post" action="{% url 'trips' userId=user.use_code %}">
             {% csrf_token %}
             <div class="col-md-12">
-                <select name="productId" id="product-select" class="form-control form-control-line" style="max-width: 350px;" required>
+                <select name="productId" id="productSelect" class="form-control form-control-line" style="max-width: 350px;" required>
                     <option value="">Seleccionar Producto</option>
                     {% for product in productsList %}
                         <option value="{{ product.pro_code }}" {% if product.pro_code == selectedProduct %}selected{% endif %}>{{ product.pro_name|title }}</option>
@@ -46,8 +46,8 @@
         </form>
     </div>
     <div class="row">
-        <div class="col-12">        
-            <div class="card">
+        <div class="card">        
+            <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="text-center">
@@ -93,7 +93,7 @@
 <!-- End footer -->
 <!-- ============================================================== -->
 <script>
-    var productSelect = document.getElementById('product-select');
+    var productSelect = document.getElementById('productSelect');
     var form = document.querySelector('form');
     productSelect.addEventListener('change', function() {
         form.submit();
