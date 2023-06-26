@@ -14,7 +14,7 @@
         <div class="col-6">
             <div class="text-end upgrade-btn">
                 <a href="{% url 'tripsUsersList' userId=user.use_code productId=selectedProduct %}" class="btn btn-primary text-white">Listado de Usuarios</a>
-                <a href="#" class="btn btn-primary text-white">Activar</a>
+                <a href="{% url 'activateTrips' userId=user.use_code productId=selectedProduct %}" class="btn btn-primary text-white">Activar</a>
             </div>
         </div>
     </div>
@@ -37,7 +37,6 @@
             {% csrf_token %}
             <div class="col-md-12">
                 <select name="productId" id="productSelect" class="form-control form-control-line" style="max-width: 350px;" required>
-                    <option value="">Seleccionar Producto</option>
                     {% for product in productsList %}
                         <option value="{{ product.pro_code }}" {% if product.pro_code == selectedProduct %}selected{% endif %}>{{ product.pro_name|title }}</option>
                     {% endfor %}

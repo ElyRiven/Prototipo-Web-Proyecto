@@ -49,4 +49,6 @@ urlpatterns = [
     path('trips/<int:userId>/', tripViews.tripsModule, name='trips'),
     path('trips/<int:userId>/product/<int:productId>/', tripViews.updateTrips, name='tripsTable'),
     path('trips/<int:userId>/product/<int:productId>/userList/', tripViews.usersTrips, name='tripsUsersList'),
+    path('trips/<int:userId>/product/<int:productId>/appointment/<int:selectedUserId>/', tripViews.appointmentModule, name='appointments'),
+    path('trips/<int:userId>/product/<int:productId>/activate/', tripViews.activateTrips, name='activateTrips'),
 ]

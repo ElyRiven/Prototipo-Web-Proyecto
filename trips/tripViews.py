@@ -65,18 +65,41 @@ def usersTrips(request, userId, productId):
             template = 'trips.html'
             return tripsTemplate(request, template, user, selectedProduct=productId, productsList=productsList, error=str(e))
 
+def appointmentModule(request, userId, productId, selectedUserId):
+    template = 'appointments.html'
+    try:
+        user = tripQueries.getUserById(userId)
+        selectedUser = tripQueries.getUserById(selectedUserId)
+        appointmentList = tripQueries.getAppointments(selectedUserId, productId)
+        return tripsTemplate(request, template, user, selectedUser=selectedUser, appointmentList=appointmentList)
+    except modExceptions.tripModuleError as e:
+        return tripsTemplate(request, template, user, selectedUser=selectedUser, error=str(e))
+
+def activateTrips(request, userId, productId):
+    template = 'trips.html'
+    try:
+        user = tripQueries.getUserById(userId)
+        productsList = tripQueries.getProducts()
+        tripQueries.activateTrip(productId)
+        userProdList = tripQueries.userProductList(productId)
+        return tripsTemplate(request, template, user, selectedProduct=productId, productsList=productsList, userProdList=userProdList)
+    except modExceptions.tripModuleError as e:
+        return tripsTemplate(request, template, user, productsList=productsList, error=str(e))
+
 def assignTrip(user, product):
     tripAssign = UserProduct()
     tripAssign.use_code = user
     tripAssign.pro_code = product    
     return tripAssign
 
-def tripsTemplate(request, template, user, userList=None, selectedProduct=None, productsList=None, userProdList=None, error=None):    
+def tripsTemplate(request, template, user, userList=None, selectedProduct=None, selectedUser=None, productsList=None, userProdList=None, appointmentList=None, error=None):    
     return render(request, template, {
             'user': user,
             'userList': userList,
             'selectedProduct': selectedProduct,
+            'selectedUser': selectedUser,
             'productsList': productsList,
             'userProdList': userProdList,
+            'appointmentList': appointmentList,
             'error': error
             })

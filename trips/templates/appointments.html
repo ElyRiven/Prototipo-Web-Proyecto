@@ -5,12 +5,11 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-airplane-takeoff"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Viajes</li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-book"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Citas</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Listado de Usuarios</h1>
-            <h3 class="fw-bold" style="padding-top: 10px;">Producto: {{ selectedProduct.pro_name|title }}</h3>
+            <h3 class="fw-bold" style="padding-top: 10px;">Usuario: {{ selectedUser.use_firstname|title }} {{ selectedUser.use_lastname|title }}</h3>
         </div>
     </div>
 </div>
@@ -27,43 +26,22 @@
     <!-- ============================================================== -->
     <!-- Start Page Content -->
     <!-- ============================================================== -->
-    <div class="card-body">
-        <h3 class="mb-0 fw-bold">Seleccionar Usuarios a Añadir:</h3>
-        <form method="post" action="{% url 'tripsUsersList' userId=user.use_code productId=selectedProduct.pro_code %}">
-            {% csrf_token %}
-            <div class="col-md-12">
-                <select name="selectedUserId" id="addUserForm" class="form-control form-control-line" style="max-width: 350px;" required>
-                    <option value="">Seleccionar Usuario</option>
-                    {% for user in userList %}
-                        <option value="{{ user.use_code }}">{{ user.use_firstname|title }} {{ user.use_lastname|title }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </form>
-    </div>
     <div class="row">
-        <div class="card">
+        <div class="card">        
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="text-center">
                             <tr class="table-primary">
-                                <th scope="col">Usuarios Registrados</th>
-                                <th scope="col">Estado del Producto</th>
-                                <th scope="col">Citas</th>
+                                <th scope="col">Tipo Cita</th>
+                                <th scope="col">Comentario</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for userProd in userProdList %}
+                            {% for appointment in appointmentList %}
                             <tr class="text-center">
-                                <td>{{ userProd.use_code.use_firstname|title }} {{ userProd.use_code.use_lastname|title }}</td>
-                                <td>{{ userProd.usepro_state|title }}</td>
-                                <td>
-                                    <div>
-                                        <a href="{% url 'appointments' userId=user.use_code productId=selectedProduct.pro_code selectedUserId=userProd.use_code.use_code %}"
-                                            class="btn btn-primary mdi mdi-book"> Ver Citas</a>
-                                    </div>
-                                </td>
+                                <td>{{ appointment.app_type|title }}</td>
+                                <td style="max-width: 200px;">{{ appointment.app_comment|title }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -95,11 +73,4 @@
 <!-- ============================================================== -->
 <!-- End footer -->
 <!-- ============================================================== -->
-<script>
-    var productSelect = document.getElementById('addUserForm');
-    var form = document.querySelector('form');
-    productSelect.addEventListener('change', function() {
-        form.submit();
-    });
-</script>
 {% endblock %}

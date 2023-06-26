@@ -33,7 +33,7 @@ def getProductById(productId):
 # Get all User Products by Product Id
 def userProductList(productId):
     try:
-        return UserProduct.objects.filter(pro_code=productId).order_by('use_code')
+        return UserProduct.objects.filter(pro_code=productId).order_by('usepro_state')
     except UserProduct.DoesNotExist:
         raise modExceptions.tripModuleError('Ocurrion un error al obtener los registros')
 
@@ -50,3 +50,24 @@ def saveUserProduct(record):
         record.save()
     except IntegrityError:
         raise modExceptions.tripModuleError('El usuario ya tiene asignado el producto')
+
+# Get all Appointments by User Id
+def getAppointments(user, product):
+    try:
+        return Appointment.objects.filter(use_code=user, pro_code=product)
+    except Appointment.DoesNotExist:
+        raise modExceptions.tripModuleError('No se encontraron citas registradas')
+
+# Set UserProduct record to 'IN PROGRESS'
+def activateTrip(productId):
+    try:
+        confirmedList = UserProduct.objects.filter(pro_code=productId, usepro_state='CONFIRMED')
+        canceledList = UserProduct.objects.filter(pro_code=productId, usepro_state='PENDING')
+        for record in confirmedList:
+            record.usepro_state = 'IN PROGRESS'
+            record.save()
+        for record in canceledList:
+            record.usepro_state = 'CANCELED'
+            record.save()
+    except UserProduct.DoesNotExist:
+        raise modExceptions.tripModuleError('No se encontraron registros para activar')
