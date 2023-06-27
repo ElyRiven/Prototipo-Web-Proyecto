@@ -1,0 +1,2 @@
+class benefitModuleError(Exception):
+    pass

@@ -91,7 +91,7 @@ def deleteProduct(request, userId, productId):
         productsList = productQueries.getProducts()
         productQueries.deleteProduct(productId)
         url = reverse('products', kwargs={'userId': userId})
-        return redirect(url)        
+        return redirect(url)
     except modExceptions.productModuleError as e:
             return productsTemplate(request, template, user, productsList, error=str(e))
 

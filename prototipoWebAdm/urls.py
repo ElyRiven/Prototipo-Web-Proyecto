@@ -20,6 +20,7 @@ from django.shortcuts import redirect
 from users import roleViews, userViews
 from products import productViews, placeViews
 from trips import tripViews
+from benefits import benefitViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
@@ -51,4 +52,11 @@ urlpatterns = [
     path('trips/<int:userId>/product/<int:productId>/userList/', tripViews.usersTrips, name='tripsUsersList'),
     path('trips/<int:userId>/product/<int:productId>/appointment/<int:selectedUserId>/', tripViews.appointmentModule, name='appointments'),
     path('trips/<int:userId>/product/<int:productId>/activate/', tripViews.activateTrips, name='activateTrips'),
+    # Benefits URLs
+    path('benefits/<int:userId>/', benefitViews.benefitModule, name='benefits'),
+    path('benefits/<int:userId>/newBenefit/', benefitViews.addBenefit, name='newBenefit'),
+    path('benefits/<int:userId>/updateBenefit/<int:benefitId>', benefitViews.editBenefit, name='updateBenefit'),
+    path('benefits/<int:userId>/deleteBenefit/<int:benefitId>', benefitViews.deleteBenefit, name='deleteBenefit'),
+    path('benefits/<int:userId>/userBenefitList/<int:benefitId>', benefitViews.benefitUserList, name='useBenList'),
+    path('benefits/<int:userId>/benefitLog/<int:benefitId>', benefitViews.benefitLog, name='benLogList'),
 ]

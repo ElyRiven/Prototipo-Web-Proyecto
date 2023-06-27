@@ -1,0 +1,96 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-star-circle"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Beneficios</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">Editar Beneficio</h1>
+        </div>
+    </div>
+</div>
+{% if error %}
+<h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+{% endif %}
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- div class="card-body"-->
+                <!-- Possible Title here, otherwise just erase the div tag -->
+                <!--/div-->
+                <div class="card-body">
+                    <form class="form-horizontal form-material mx-2" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-md-12">Nombre Beneficio</label>
+                            <div class="col-md-12">
+                                <input name="benefitName" type="text" placeholder="Nombre Benficio"
+                                    class="form-control form-control-line" maxlength="100" 
+                                    value="{{ benefit.ben_name|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Tipo Beneficio</label>
+                            <div class="col-md-12">
+                                <select name="benefitType" class="form-control form-control-line" required>
+                                    <option value="Logros y Premios" {% if benefit.ben_state == 'Logros y Premios' %}selected{% endif %}>Logros y Premios</option>
+                                    <option value="Progreso y Desarrollo" {% if benefit.ben_state == 'Progreso y Desarrollo' %}selected{% endif %}>Progreso y Desarrollo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Descripcion</label>
+                            <div class="col-md-12">
+                                <input name="benefitDescription" type="text" placeholder="Descripcion del Beneficio"
+                                    class="form-control form-control-line" maxlength="250"
+                                    value="{{ benefit.ben_description|title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by TravelHunter.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+{% endblock %}

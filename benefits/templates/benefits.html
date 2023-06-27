@@ -5,16 +5,16 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-buffer"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Productos</li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-star-circle"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Beneficios</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Listado de Productos</h1>
+            <h1 class="mb-0 fw-bold">Listado de Beneficios</h1>
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'newProduct' userId=user.use_code %}"
-                class="btn btn-primary text-white">Agregar Producto</a>
+                <a href="#" class="btn btn-primary text-white">Administrar Cuestionarios</a>
+                <a href="{% url 'newBenefit' userId=user.use_code %}" class="btn btn-primary text-white">Agregar Beneficio</a>
             </div>
         </div>
     </div>
@@ -40,33 +40,27 @@
                         <table class="table table-bordered">
                             <thead class="text-center">
                                 <tr class="table-primary">
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Precio</th>
+                                    <th scope="col">Nombre Beneficio</th>
+                                    <th scope="col">Tipo Beneficio</th>
                                     <th scope="col">Descripcion</th>
-                                    <th scope="col">Pais</th>
-                                    <th scope="col">Fecha Inicio</th>
-                                    <th scope="col">Fecha Fin</th>
-                                    <th scope="col">Estado</th>
                                     <th scope="col">Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for product in productsList %}
+                                {% for benefit in benefitsList %}
                                 <tr class="text-center">
-                                    <td>{{ product.pro_name|title }}</td>
-                                    <td>$ {{ product.pro_price }}</td>
-                                    <td style="max-width: 200px;">{{ product.pro_description|title }}</td>
-                                    <td>{{ product.pro_country|title }}</td>
-                                    <td>{{ product.pro_startdate|date:'Y-m-d' }}</td>
-                                    <td>{{ product.pro_enddate|date:'Y-m-d' }}</td>
-                                    <td>{{ product.pro_state|title }}</td>
+                                    <td style="max-width: 100px;">{{ benefit.ben_name|title }}</td>
+                                    <td>{{ benefit.ben_type|title }}</td>
+                                    <td style="max-width: 400px;">{{ benefit.ben_description|title }}</td>
                                     <td>
                                         <div>
-                                            <a href="{% url 'places' userId=user.use_code productId=product.pro_code %}"
-                                                class="btn btn-primary mdi mdi-format-list-bulleted-type">Itinerario</a>
-                                            <a href="{% url 'updateProduct' userId=user.use_code productId=product.pro_code %}"
+                                            <a href="{% url 'useBenList' userId=user.use_code benefitId=benefit.ben_code %}"
+                                                class="btn btn-primary mdi mdi-format-list-bulleted-type">Listado Usuarios</a>
+                                            <a href="{% url 'benLogList' userId=user.use_code benefitId=benefit.ben_code %}"
+                                                class="btn btn-primary mdi mdi-folder-account">Historial</a>
+                                            <a href="{% url 'updateBenefit' userId=user.use_code benefitId=benefit.ben_code %}"
                                                 class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                            <a href="{% url 'deleteProduct' userId=user.use_code productId=product.pro_code %}"
+                                            <a href="{% url 'deleteBenefit' userId=user.use_code benefitId=benefit.ben_code %}"
                                                 class="btn btn-danger mdi mdi-delete-circle"
                                                 onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
                                         </div>
