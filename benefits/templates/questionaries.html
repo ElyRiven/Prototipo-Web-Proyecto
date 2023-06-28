@@ -5,17 +5,15 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-view-list"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Lugares</li>
+                    <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-earth"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cuestionarios</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Listado de Lugares</h1>
-            <h3 class="mb-0 fw-bold">Producto: {{ product.pro_name|title }}</h3>
+            <h1 class="mb-0 fw-bold">Listado de Paises</h1>
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="{% url 'newPlace' userId=user.use_code productId=product.pro_code %}"
-                class="btn btn-primary text-white">Agregar Lugar</a>
+                <a href="{% url 'newCountry' userId=user.use_code %}" class="btn btn-primary text-white">Añadir Pais</a>
             </div>
         </div>
     </div>
@@ -35,35 +33,25 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-12">
-            <div class="card">                
+            <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead class="text-center">
                                 <tr class="table-primary">
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Descripcion</th>
-                                    <th scope="col">Actividades</th>
-                                    <th scope="col">Ciudad</th>
-                                    <th scope="col">Fecha Inicio</th>
-                                    <th scope="col">Fecha Fin</th>
+                                    <th scope="col">Pais</th>
                                     <th scope="col">Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for place in placesList %}
+                                {% for country in countryList %}
                                 <tr class="text-center">
-                                    <td>{{ place.pla_name|title }}</td>
-                                    <td style="max-width: 200px;">{{ place.pla_description|title }}</td>
-                                    <td>{{ place.pla_activity|title }}</td>
-                                    <td>{{ place.pla_city|title }}</td>
-                                    <td>{{ place.pla_startdate|date:'Y-m-d' }}</td>
-                                    <td>{{ place.pla_enddate|date:'Y-m-d' }}</td>
+                                    <td>{{ country.cou_name|title }}</td>
                                     <td>
                                         <div>
-                                            <a href="{% url 'updatePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"
-                                                class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                            <a href="{% url 'deletePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"
+                                            <a href="{% url 'questions' userId=user.use_code countryId=country.cou_code %}"
+                                                class="btn btn-primary mdi mdi-format-list-bulleted-type"> Ver Preguntas</a>
+                                            <a href="{% url 'deleteCountry' userId=user.use_code countryId=country.cou_code %}"
                                                 class="btn btn-danger mdi mdi-delete-circle"
                                                 onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
                                         </div>

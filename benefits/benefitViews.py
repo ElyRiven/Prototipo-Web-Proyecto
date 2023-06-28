@@ -97,14 +97,12 @@ def assignBenefit(benefit, benName, benType, benDescription):
     benefit.ben_description = benDescription
     return benefit
 
-def benefitTemplate(request, template, user, benefit=None, benefitsList=None, useBenList=None, benLogList=None, countryList=None, questionList=None,error=None):    
+def benefitTemplate(request, template, user, benefit=None, benefitsList=None, useBenList=None, benLogList=None, error=None):    
     return render(request, template, {
             'user': user,
             'benefit': benefit,
             'benefitsList': benefitsList,
             'useBenList': useBenList,
             'benLogList': benLogList,
-            'countryList': countryList,
-            'questionList': questionList,
             'error': error
             })

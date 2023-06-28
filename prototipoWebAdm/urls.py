@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 from users import roleViews, userViews
 from products import productViews, placeViews
 from trips import tripViews
-from benefits import benefitViews
+from benefits import benefitViews, questionaryViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
@@ -59,4 +59,10 @@ urlpatterns = [
     path('benefits/<int:userId>/deleteBenefit/<int:benefitId>', benefitViews.deleteBenefit, name='deleteBenefit'),
     path('benefits/<int:userId>/userBenefitList/<int:benefitId>', benefitViews.benefitUserList, name='useBenList'),
     path('benefits/<int:userId>/benefitLog/<int:benefitId>', benefitViews.benefitLog, name='benLogList'),
+    # Questionaries URLs
+    path('questionaries/<int:userId>/', questionaryViews.questionaryModule, name='questionaries'),
+    path('questionaries/<int:userId>/newCountry/', questionaryViews.addCountry, name='newCountry'),
+    path('questionaries/<int:userId>/deleteCountry/<int:countryId>', questionaryViews.deleteCountry, name='deleteCountry'),
+    path('questionaries/<int:userId>/question/<int:countryId>', questionaryViews.questionModule, name='questions'),
+    path('questionaries/<int:userId>/question/<int:countryId>/updateQuestion/<int:questionId>/', questionaryViews.editQuestion, name='updateQuestion'),
 ]

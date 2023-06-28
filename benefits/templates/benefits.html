@@ -13,7 +13,7 @@
         </div>
         <div class="col-6">
             <div class="text-end upgrade-btn">
-                <a href="#" class="btn btn-primary text-white">Administrar Cuestionarios</a>
+                <a href="{% url 'questionaries' userId=user.use_code %}" class="btn btn-primary text-white">Administrar Cuestionarios</a>
                 <a href="{% url 'newBenefit' userId=user.use_code %}" class="btn btn-primary text-white">Agregar Beneficio</a>
             </div>
         </div>

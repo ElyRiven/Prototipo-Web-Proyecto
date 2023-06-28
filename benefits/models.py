@@ -54,3 +54,21 @@ class BenefitLog(models.Model):
     class Meta:
         managed = False
         db_table = 'BENEFIT_LOG'
+
+class Country(models.Model):
+    cou_code = models.AutoField(primary_key=True)
+    cou_name = models.CharField(max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'COUNTRY'
+
+class Question(models.Model):
+    que_code = models.AutoField(primary_key=True)
+    que_description = models.CharField(max_length=100)
+    que_answer = models.CharField(max_length=100)
+    cou_code = models.ForeignKey(Country, models.DO_NOTHING, db_column='cou_code')
+
+    class Meta:
+        managed = False
+        db_table = 'QUESTION'
