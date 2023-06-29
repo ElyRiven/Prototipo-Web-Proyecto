@@ -55,6 +55,29 @@ def questionModule(request, userId, countryId):
     except modExceptions.questionaryModuleError as e:
         return questionaryTemplate(request, template, user, error=str(e))
 
+def addQuestion(request, userId, countryId):
+    template = 'questionsAdd.html'
+    if request.method == 'POST':
+        try:
+            user = questionaryQueries.getUserById(userId)
+            selectedCountry = questionaryQueries.getCountryById(countryId)
+            newQuestion = Question()
+            newQuestion = assignQuestion(newQuestion,
+                                         request.POST['questionDescription'].upper(),
+                                         request.POST['questionAnswer'].upper(),
+                                         selectedCountry)
+            questionaryQueries.saveQuestion(newQuestion)
+            url = reverse('questions', kwargs={'userId': userId, 'countryId': countryId})
+            return redirect(url)
+        except modExceptions.questionaryModuleError as e:
+            return questionaryTemplate(request, template, user, error=str(e))
+    else:
+        try:
+            user = questionaryQueries.getUserById(userId)
+            return questionaryTemplate(request, template, user)
+        except modExceptions.questionaryModuleError as e:
+            return questionaryTemplate(request, template, user, error=str(e))
+
 def editQuestion(request, userId, countryId, questionId):
     template = 'questionsUpdate.html'
     if request.method == 'POST':
@@ -63,8 +86,8 @@ def editQuestion(request, userId, countryId, questionId):
             selectedCountry = questionaryQueries.getCountryById(countryId)
             question = questionaryQueries.getQuestionById(questionId)
             question = assignQuestion(question,
-                                        request.POST['questionDescription'],
-                                        request.POST['questionAnswer'],
+                                        request.POST['questionDescription'].upper(),
+                                        request.POST['questionAnswer'].upper(),
                                         selectedCountry)
             questionaryQueries.saveQuestion(question)
             url = reverse('questions', kwargs={'userId': userId, 'countryId': countryId})
@@ -79,10 +102,21 @@ def editQuestion(request, userId, countryId, questionId):
         except modExceptions.questionaryModuleError as e:
             return questionaryTemplate(request, template, user, error=str(e))
 
+def deleteQuestion(request, userId, countryId, questionId):
+    template = 'questions.html'
+    try:
+        user = questionaryQueries.getUserById(userId)
+        question = questionaryQueries.getQuestionById(questionId)
+        questionaryQueries.deleteQuestion(question)
+        url = reverse('questions', kwargs={'userId': userId, 'countryId': countryId})
+        return redirect(url)
+    except modExceptions.questionaryModuleError as e:
+        return questionaryTemplate(request, template, user, error=str(e))
+
 def assignQuestion(question, description, answer, country):
     question.que_description = description
     question.que_answer = answer
-    question.que_country = country
+    question.cou_code = country
     return question
 
 def questionaryTemplate(request, template, user, countryList=None, selectedCountry=None, questionList=None, selectedQuestion=None, error=None):    

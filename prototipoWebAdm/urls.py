@@ -62,7 +62,9 @@ urlpatterns = [
     # Questionaries URLs
     path('questionaries/<int:userId>/', questionaryViews.questionaryModule, name='questionaries'),
     path('questionaries/<int:userId>/newCountry/', questionaryViews.addCountry, name='newCountry'),
-    path('questionaries/<int:userId>/deleteCountry/<int:countryId>', questionaryViews.deleteCountry, name='deleteCountry'),
-    path('questionaries/<int:userId>/question/<int:countryId>', questionaryViews.questionModule, name='questions'),
+    path('questionaries/<int:userId>/deleteCountry/<int:countryId>/', questionaryViews.deleteCountry, name='deleteCountry'),
+    path('questionaries/<int:userId>/question/<int:countryId>/', questionaryViews.questionModule, name='questions'),
+    path('questionaries/<int:userId>/newQuestion/<int:countryId>/', questionaryViews.addQuestion, name='newQuestion'),
     path('questionaries/<int:userId>/question/<int:countryId>/updateQuestion/<int:questionId>/', questionaryViews.editQuestion, name='updateQuestion'),
+    path('questionaries/<int:userId>/question/<int:countryId>/deleteQuestion/<int:questionId>/', questionaryViews.deleteQuestion, name='deleteQuestion'),
 ]

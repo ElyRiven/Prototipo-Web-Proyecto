@@ -104,3 +104,11 @@ def saveQuestion(question):
         return True
     except IntegrityError:
         raise modExceptions.questionaryModuleError('Error al guardar la pregunta')
+
+# Delete Question
+def deleteQuestion(question):
+    try:
+        question.delete()
+        return True
+    except IntegrityError:
+        raise modExceptions.questionaryModuleError('Error al eliminar la pregunta')

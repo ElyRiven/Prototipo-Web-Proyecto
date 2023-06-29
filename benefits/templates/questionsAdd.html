@@ -9,13 +9,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Preguntas</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Listado de Preguntas</h1>
-            <h3 class="mb-0 fw-bold">Pais: {{ selectedCountry.cou_name|title }}</h3>
-        </div>
-        <div class="col-6">
-            <div class="text-end upgrade-btn">
-                <a href="{% url 'newQuestion' userId=user.use_code countryId=selectedCountry.cou_code %}" class="btn btn-primary text-white">Añadir Pregunta</a>
-            </div>
+            <h1 class="mb-0 fw-bold">Nueva Pregunta</h1>
         </div>
     </div>
 </div>
@@ -35,35 +29,32 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <!-- div class="card-body"-->
+                <!-- Possible Title here, otherwise just erase the div tag -->
+                <!--/div-->
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="text-center">
-                                <tr class="table-primary">
-                                    <th scope="col">Descripcion Pregunta</th>
-                                    <th scope="col">Respuesta</th>
-                                    <th scope="col">Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for question in questionList %}
-                                <tr class="text-center">
-                                    <td>{{ question.que_description|title }}</td>
-                                    <td>{{ question.que_answer|title }}</td>
-                                    <td>
-                                        <div>
-                                            <a href="{% url 'updateQuestion' userId=user.use_code countryId=selectedCountry.cou_code questionId=question.que_code %}"
-                                                class="btn btn-primary mdi mdi-pencil-circle"></a>
-                                            <a href="{% url 'deleteQuestion' userId=user.use_code countryId=selectedCountry.cou_code questionId=question.que_code %}"
-                                                class="btn btn-danger mdi mdi-delete-circle"
-                                                onclick="return confirm('Se eliminará el registro seleccionado. ¿Contiunar?')"></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                    <form class="form-horizontal form-material mx-2" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-md-12">Descripcion</label>
+                            <div class="col-md-12">
+                                <input name="questionDescription" type="text" placeholder="Descripcion de la pregunta"
+                                    class="form-control form-control-line" maxlength="100" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Respuesta</label>
+                            <div class="col-md-12">
+                                <input name="questionAnswer" type="text" placeholder="Respuesta de la pregunta"
+                                    class="form-control form-control-line" maxlength="100" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
