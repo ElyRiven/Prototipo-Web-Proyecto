@@ -6,14 +6,16 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
                     <li class="breadcrumb-item"><a class="link"><i class="mdi mdi-account"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ module }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Roles</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">{{ title }}</h1>
+            <h1 class="mb-0 fw-bold">Actualizar Rol</h1>
         </div>
     </div>
 </div>
+{% if error %}
 <h4 class="mb-0 fw-bold" style="padding-left: 25px; color: red;">{{ error }}</h4>
+{% endif %}
 <!-- ============================================================== -->
 <!-- End Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->

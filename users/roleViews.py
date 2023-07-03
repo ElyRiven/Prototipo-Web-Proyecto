@@ -3,102 +3,70 @@ from users.models import User, Role
 from users.authentication import utils, authExceptions
 from users.utilsModule import queries, modExceptions
 from django.urls import reverse
-from django.db import IntegrityError
 
 def rolesModule(request, userId):
-    if request.method == 'POST':
-        pass
-    else:
-        try:        
-            user = queries.getUserById(userId)
-            rolesList = queries.getRoles()
-            return render(request, 'roles.html', {
-                'user': user,
-                'rolesList': rolesList,
-                'module': 'Roles',
-                'title': 'Listado de Roles',
-                'buttonAddRole': 'Agregar Rol'
-                })
-        except modExceptions.roleModuleError:
-            return render(request, 'roles.html', {
-                'user': user,
-                'error': 'Error al cargar el módulo de roles',
-                'module': 'Roles',
-                'title': 'Listado de Roles'})
+    template = 'roles.html'
+    try:
+        user = queries.getUserById(userId)
+        rolesList = queries.getRoles()
+        return rolesTemplate(request, template, user, rolesList=rolesList)
+    except modExceptions.roleModuleError as e:
+        return rolesTemplate(request, template, user, error=str(e))
 
 def addRole(request, userId):
+    template = 'rolesAdd.html'
     if request.method == 'POST':
         roleName = request.POST['roleName'].upper()
         newRole = Role()
         newRole.rol_name = roleName
-        try:            
+        try:
+            user = queries.getUserById(userId)
             queries.saveNewRole(newRole)
             url = reverse('roles', kwargs={'userId': userId})
             return redirect(url)
-        except modExceptions.roleModuleError:
-            return render(request, 'rolesAdd.html', {
-                'user': user,
-                'error': 'Error al guardar el nuevo rol',
-                'module': 'Roles',
-                'title': 'Nuevo Rol'})
+        except modExceptions.roleModuleError as e:
+            return rolesTemplate(request, template, user, error=str(e))
     else:
         try:
             user = queries.getUserById(userId)
-            return render(request, 'rolesAdd.html', {
-                'user': user,                
-                'module': 'Roles',
-                'title': 'Nuevo Rol',
-                })
-        except modExceptions.roleModuleError:
-            return render(request, 'rolesAdd.html', {
-                'user': user,
-                'error': 'Error al cargar el módulo de roles',
-                'module': 'Roles',
-                'title': 'Nuevo Rol'})
+            return rolesTemplate(request, template, user)
+        except modExceptions.roleModuleError as e:
+            return rolesTemplate(request, template, user, error=str(e))
 
 def editRole(request, userId, roleId):
+    template = 'rolesUpdate.html'
     if request.method == 'POST':
         updatedRole = request.POST['roleName'].upper()
         try:
+            user = queries.getUserById(userId)
             queries.updateRole(roleId, updatedRole)
             url = reverse('roles', kwargs={'userId': userId})
             return redirect(url)
-        except modExceptions.roleModuleError:
-            return render(request, 'rolesUpdate.html', {
-                'user': user,
-                'error': 'Error al guardar el nuevo rol',
-                'module': 'Roles',
-                'title': 'Actualizar Rol'})
+        except modExceptions.roleModuleError as e:
+            return rolesTemplate(request, template, user, error=str(e))
     else:
         try:
             user = queries.getUserById(userId)
             role = queries.getRoleById(roleId)
-            return render(request, 'rolesUpdate.html', {
-                'user': user,
-                'role': role,
-                'module': 'Roles',
-                'title': 'Actualizar Rol'
-                })
-        except modExceptions.roleModuleError:
-            return render(request, 'rolesUpdate.html', {
-                'user': user,
-                'error': 'Error al cargar la interfaz de edición de roles',
-                'module': 'Roles',
-                'title': 'Actualizar Rol'})
+            return rolesTemplate(request, template, user, role=role)
+        except modExceptions.roleModuleError as e:
+            return rolesTemplate(request, template, user, error=str(e))
 
-def deleteRole(request, userId, roleId):    
+def deleteRole(request, userId, roleId):
+    template = 'roles.html'
     try:
         user = queries.getUserById(userId)
         queries.deleteRole(roleId)
         url = reverse('roles', kwargs={'userId': userId})
         return redirect(url)
-    except IntegrityError:
+    except modExceptions.roleModuleError as e:
         rolesList = queries.getRoles()
-        return render(request, 'roles.html', {
+        return rolesTemplate(request, template, user, rolesList=rolesList, error=str(e))
+
+def rolesTemplate(request, template, user, rolesList=None, role=None, error=None):    
+    return render(request, template, {
             'user': user,
             'rolesList': rolesList,
-            'error': 'No se puede borrar el registro. Existen usuarios asignados a este rol',
-            'module': 'Roles',
-            'title': 'Listado de Roles',
-            'buttonAddRole': 'Agregar Rol'
+            'role': role,
+            'error': error
             })

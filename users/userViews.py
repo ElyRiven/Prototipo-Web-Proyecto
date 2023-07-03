@@ -6,6 +6,7 @@ from django.urls import reverse
 from datetime import datetime
 
 def login(request):
+    template = 'login.html'
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -18,148 +19,127 @@ def login(request):
                         url = reverse('users', kwargs={'userId': userId})
                         return redirect(url)
                     else:
-                        return render(request, 'login.html', {'error': 'Usuario no autorizado'})
+                        raise authExceptions.userLoginError('Usuario no autorizado')
                 else:
-                    return render(request, 'login.html', {'error': 'Contraseña Incorrecta'})
+                    raise authExceptions.userLoginError('Contraseña Incorrecta')
             else:
-                return render(request, 'login.html', {'error': 'Usuario Incorrecto'})
-        except authExceptions.userLoginError:
-            return render(request, 'login.html', {'error': 'Error al iniciar sesión'})
+                raise authExceptions.userLoginError('Usuario Incorrecto')
+        except authExceptions.userLoginError as e:
+            return usersTemplate(request, template, error=str(e))
     else:
-        return render(request, 'login.html')
+        return render(request, template)
 
 def usersModule(request, userId):
+    template = 'users.html'
     try:
         user = queries.getUserById(userId)
         usersList = queries.getUsers()
-        return render(request, 'users.html', {
-            'user': user,
-            'usersList': usersList,
-            'module': 'Usuarios',
-            'title': 'Listado de Usuarios',
-            'buttonAddUser': 'Agregar Usuario',
-            'buttonManageRoles': 'Administrar Roles',
-            })
-    except modExceptions.userModuleError:
-        return render(request, 'users.html', {
-            'user': user,
-            'error': 'Error al cargar el módulo de usuarios',
-            'module': 'Usuarios',
-            'title': 'Listado de Usuarios'})
+        return usersTemplate(request, template, user=user, usersList=usersList)
+    except modExceptions.userModuleError as e:
+        return usersTemplate(request, template, user=user, error=str(e))
 
 def addUser(request, userId):
+    template = 'usersAdd.html'
     if request.method == 'POST':
         newUser = User()
-        newUser.use_firstname = request.POST['userFirstName'].upper()
-        newUser.use_lastname = request.POST['userLastName'].upper()
-        newUser.use_email = request.POST['userEmail'].upper()
-        newUser.use_idnumber = request.POST['userIdNumber']
-        newUser.use_phonenumber = request.POST['userPhone']
-
         #Get Role by Id
         roleAssing = request.POST['userRole']
         role = queries.getRoleById(roleAssing)
-        newUser.rol_code = role
-
         #Encrypt password Here
         password = utils.encryptPassword(request.POST['userPassword'])
-        newUser.use_password = password
+        newUser = assignUser(newUser,
+                                request.POST['userFirstName'].upper(),
+                                request.POST['userLastName'].upper(),
+                                request.POST['userEmail'].upper(),
+                                request.POST['userIdNumber'],
+                                request.POST['userPhone'],
+                                role,
+                                password
+                             )
         try:
             queries.saveUser(newUser)
             queries.addBenefitToUser(newUser)
             url = reverse('users', kwargs={'userId': userId})
             return redirect(url)
-        except modExceptions.userModuleError:
-            return render(request, 'usersAdd.html', {
-                'user': user,
-                'error': 'Error al guardar el nuevo usuario',
-                'module': 'Usuarios',
-                'title': 'Nuevo Usuario'})
+        except modExceptions.userModuleError as e:
+            return usersTemplate(request, template, user=user, error=str(e))
     else:
         try:
             user = queries.getUserById(userId)
             rolesList = queries.getRoles()
-            return render(request, 'usersAdd.html', {
-                'user': user,
-                'rolesList': rolesList,
-                'module': 'Usuarios',
-                'title': 'Nuevo Usuario',
-                })
-        except modExceptions.userModuleError:
-            return render(request, 'usersAdd.html', {
-                'user': user,
-                'error': 'Error al cargar la interfaz de añadir usuario',
-                'module': 'Usuarios',
-                'title': 'Nuevo Usuario'})
+            return usersTemplate(request, template, user=user, rolesList=rolesList)
+        except modExceptions.userModuleError as e:
+            return usersTemplate(request, template, user=user, rolesList=rolesList, error=str(e))
 
 def editUser(request, userId, userToEditId):
+    template = 'usersUpdate.html'
     if request.method == 'POST':
         user = queries.getUserById(userToEditId)
-        user.use_firstname = request.POST['userFirstName'].upper()
-        user.use_lastname = request.POST['userLastName'].upper()
-        user.use_email = request.POST['userEmail'].upper()
-        user.use_idnumber = request.POST['userIdNumber']
-        user.use_phonenumber = request.POST['userPhone']
-        user.use_points = request.POST['userPoints']
-
         #Update the first login Date
-        newFirstLoginDate = request.POST['userFirstLogin']
-        user.use_firstlogin = datetime.strptime(newFirstLoginDate, '%Y-%m-%d').date()
+        newFirstLoginDate = datetime.strptime(request.POST['userFirstLogin'], '%Y-%m-%d').date()
 
         #Get Role by Id
         roleAssing = request.POST['userRole']
         role = queries.getRoleById(roleAssing)
-        user.rol_code = role
 
+        user = assignUser(user,
+                                request.POST['userFirstName'].upper(),
+                                request.POST['userLastName'].upper(),
+                                request.POST['userEmail'].upper(),
+                                request.POST['userIdNumber'],
+                                request.POST['userPhone'],
+                                role,
+                                points=request.POST['userPoints'],
+                                firstLogin=request.POST['userFirstLogin']
+                             )
         try:
             queries.saveUser(user)
             url = reverse('users', kwargs={'userId': userId})
             return redirect(url)
-        except modExceptions.userModuleError:
-            return render(request, 'usersUpdate.html', {
-                'user': user,
-                'error': 'Error al guardar los cambios',
-                'module': 'Usuarios',
-                'title': 'Editar Usuario'})
+        except modExceptions.userModuleError as e:
+            return usersTemplate(request, template, user=user, error=str(e))
     else:
         try:
             user = queries.getUserById(userId)
             rolesList = queries.getRoles()
             userToEdit = queries.getUserById(userToEditId)
-            return render(request, 'usersUpdate.html', {
-                'user': user,
-                'userToEdit': userToEdit,
-                'rolesList': rolesList,
-                'module': 'Usuarios',
-                'title': 'Editar Usuario',
-                })
-        except modExceptions.userModuleError:
-            return render(request, 'usersUpdate.html', {
-                'user': user,
-                'error': 'Error al cargar la interfaz de editar usuario',
-                'module': 'Usuarios',
-                'title': 'Editar Usuario'})
+            return usersTemplate(request, template, user=user, rolesList=rolesList, userToEdit=userToEdit)
+        except modExceptions.userModuleError as e:
+            return usersTemplate(request, template, user=user, rolesList=rolesList, userToEdit=userToEdit, error=str(e))
 
-def deleteUser(request, userId, userToDeleteId):    
+def deleteUser(request, userId, userToDeleteId):
+    template = 'users.html'    
     try:
         user = queries.getUserById(userId)
+        usersList = queries.getUsers()
         if userId == userToDeleteId:
-            usersList = queries.getUsers()
-            return render(request, 'users.html', {
-                'user': user,
-                'usersList': usersList,
-                'error': 'No se puede eliminar el usuario con el que se ha inciado sesión',
-                'module': 'Usuarios',
-                'title': 'Listado de Usuarios',
-                'buttonAddUser': 'Agregar Usuario',
-                'buttonManageRoles': 'Administrar Roles'
-                })
+            raise modExceptions.userModuleError('No se puede eliminar el usuario con el que se ha inciado sesión')
         queries.deleteUser(userToDeleteId)
         url = reverse('users', kwargs={'userId': userId})
         return redirect(url)
-    except modExceptions.userModuleError:
-        return render(request, 'users.html', {
+    except modExceptions.userModuleError as e:
+        return usersTemplate(request, template, user=user, usersList=usersList, error=str(e))
+
+def assignUser(user, firstName, lastName, email, idNumber, phone, role, password=None, points=None, firstLogin=None):
+    user.use_firstname = firstName.upper()
+    user.use_lastname = lastName.upper()
+    user.use_email = email.upper()
+    user.use_idnumber = idNumber
+    user.use_phonenumber = phone
+    if password is not None:
+        user.use_password = password
+    if points is not None:
+        user.use_points = points
+    if firstLogin is not None:
+        user.use_firstlogin = firstLogin
+    user.rol_code = role
+    return user
+
+def usersTemplate(request, template, user=None, usersList=None, rolesList=None, userToEdit=None, error=None):
+    return render(request, template, {
             'user': user,
-            'error': 'Error al eliminar el usuario',
-            'module': 'Usuarios',
-            'title': 'Listado de Usuarios'})
+            'usersList': usersList,
+            'rolesList': rolesList,
+            'userToEdit': userToEdit,
+            'error': error
+            })
