@@ -21,6 +21,7 @@ from users import roleViews, userViews
 from products import productViews, placeViews
 from trips import tripViews
 from benefits import benefitViews, questionaryViews
+from api import apiViews
 
 urlpatterns = [
     path('', lambda request: redirect('login/')),
@@ -67,4 +68,7 @@ urlpatterns = [
     path('questionaries/<int:userId>/newQuestion/<int:countryId>/', questionaryViews.addQuestion, name='newQuestion'),
     path('questionaries/<int:userId>/question/<int:countryId>/updateQuestion/<int:questionId>/', questionaryViews.editQuestion, name='updateQuestion'),
     path('questionaries/<int:userId>/question/<int:countryId>/deleteQuestion/<int:questionId>/', questionaryViews.deleteQuestion, name='deleteQuestion'),
+    # API URLs
+    path('api/verifyUser/',apiViews.verifyUser, name='validateUser'),
+    path('api/user/',apiViews.apiUser, name='user'),
 ]
