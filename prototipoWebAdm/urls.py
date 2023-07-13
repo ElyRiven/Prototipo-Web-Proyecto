@@ -71,4 +71,12 @@ urlpatterns = [
     # API URLs
     path('api/verifyUser/',apiViews.verifyUser, name='validateUser'),
     path('api/user/',apiViews.apiUser, name='user'),
+    path('api/getUsers/',apiViews.apiGetUsers, name='getUsers'),
+    path('api/getBenefits/',apiViews.apiGetBenefits, name='getBenefits'),
+    path('api/checkTrip/',apiViews.apiCheckTrip, name='checkTrip'),
+    path('api/getProduct/',apiViews.apiGetProduct, name='getProduct'),
+    path('api/getQuestions/',apiViews.apiGetQuestions, name='getQuestions'),
+    path('api/savePoints/',apiViews.apiSavePoints, name='savePoints'),
+    path('api/completeBenefit/',apiViews.apiCompleteBenefit, name='completeBenefit'),
+    path('api/getUserBenefits/',apiViews.apiGetUserBenefits, name='getUserBenefits'),
 ]

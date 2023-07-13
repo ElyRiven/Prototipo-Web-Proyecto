@@ -1,4 +1,4 @@
-from api.models import User, Role
+from api.models import User, Role, Benefit, UserProduct, Product, Country, Question, UserBenefit
 from api.utilsModule import modExceptions
 import hashlib
 
@@ -17,6 +17,13 @@ def validateUser(username, password):
             return None
     except User.DoesNotExist:
         raise modExceptions.apiException('Usuario no existe')
+
+# Get all Users
+def getAllUsers():
+    try:
+        return User.objects.all()
+    except User.DoesNotExist:
+        raise modExceptions.apiException('No existen usuarios')
 
 # Get user by email
 def getUserById(userId):
@@ -39,3 +46,61 @@ def getRoleById(roleId):
         return Role.objects.get(rol_code=roleId)
     except Role.DoesNotExist:
         raise modExceptions.apiException('Rol no existe')
+
+# Get all Benefits
+def getAllBenefits():
+    try:
+        return Benefit.objects.all()
+    except Benefit.DoesNotExist:
+        raise modExceptions.apiException('No existen beneficios')
+
+# Get UserProduct by UserId
+def getUserProductByUserId(userId):
+    try:
+        userProduct = UserProduct.objects.get(use_code=userId, usepro_state='IN PROGRESS')
+        return userProduct
+    except UserProduct.DoesNotExist:
+        raise modExceptions.apiException('El usuario no tiene viajes en progreso')
+
+# Get Product by Id
+def getProductById(productId):
+    try:
+        return Product.objects.get(pro_code=productId)
+    except Product.DoesNotExist:
+        raise modExceptions.apiException('Producto no existe')
+
+# Get Country by Name
+def getCountryByName(countryName):
+    try:
+        return Country.objects.get(cou_name=countryName)
+    except Country.DoesNotExist:
+        raise modExceptions.apiException('Pais no existe')
+
+# Get All Question by CountryId
+def getAllQuestionByCountryId(countryId):
+    try:
+        return Question.objects.filter(cou_code=countryId)
+    except Question.DoesNotExist:
+        raise modExceptions.apiException('No existen preguntas para el pais seleccionado')
+
+# Get all UserBenefit by UserId
+def getAllUserBenefitByUserId(userId):
+    try:
+        return UserBenefit.objects.filter(use_code=userId).order_by('ben_code')
+    except UserBenefit.DoesNotExist:
+        raise modExceptions.apiException('No existen beneficios para el usuario')
+
+# Get UserBenefit by UserId & BenefitId
+def getUserBenefit(userId, benefitId):
+    try:
+        return UserBenefit.objects.get(use_code=userId, ben_code=benefitId)
+    except UserBenefit.DoesNotExist:
+        raise modExceptions.apiException('No existen beneficios para el usuario')
+
+# Save UserBenefit by UserId & BenefitId
+def saveUserBenefit(updatedUserBenefit):
+    try:
+        updatedUserBenefit.save()
+        return True;
+    except UserBenefit.DoesNotExist:
+        raise modExceptions.apiException('No se pudo actualizar el estado del beneficio')

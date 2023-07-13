@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from api.models import User, Role
 from api.utilsModule import modExceptions
 from api.utilsModule import queries as apiQueries
@@ -70,6 +70,119 @@ def apiUser(request):
                                     firstLogin=firstLogin)
             if apiQueries.saveUser(userToEdit):
                 return HttpResponse('Usuario actualizado correctamente')
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiGetUsers(request):
+    if request.method == 'GET':
+        try:
+            usersList = apiQueries.getAllUsers()
+            if usersList is not None:
+                usersJson = serializers.serialize('json', usersList)
+                response = HttpResponse(usersJson, content_type='application/json')
+                return response
+            else:
+                HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiGetBenefits(request):
+    if request.method == 'GET':
+        try:
+            benefitsList = apiQueries.getAllBenefits()
+            if benefitsList is not None:
+                benefitsJson = serializers.serialize('json', benefitsList)
+                response = HttpResponse(benefitsJson, content_type='application/json')
+                return response
+            else:
+                HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiCheckTrip(request):
+    if request.method == 'GET':
+        userId = request.GET.get('userId')
+        try:
+            userCheck = apiQueries.getUserProductByUserId(userId)
+            if userCheck is not None:
+                userCheckJson = serializers.serialize('json', [userCheck])
+                response = HttpResponse(userCheckJson, content_type='application/json')
+                return response                
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiGetProduct(request):
+    if request.method == 'GET':
+        productId = request.GET.get('productId')
+        try:
+            product = apiQueries.getProductById(productId)
+            if product is not None:
+                productJson = serializers.serialize('json', [product])
+                response = HttpResponse(productJson, content_type='application/json')
+                return response
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiGetQuestions(request):
+    if request.method == 'GET':
+        country = request.GET.get('country').upper()
+        try:
+            countryDB = apiQueries.getCountryByName(country)
+            questionsList = apiQueries.getAllQuestionByCountryId(countryDB.cou_code)
+            if questionsList is not None:
+                questionsJson = serializers.serialize('json', questionsList)
+                response = HttpResponse(questionsJson, content_type='application/json')
+                return response
+            else:
+                HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiSavePoints(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        points = data.get('use_points')
+        try:
+            userToEdit = apiQueries.getUserById(userId)
+            userToEdit.use_points += points
+            if apiQueries.saveUser(userToEdit):
+                return HttpResponse('Puntos actualizados correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiGetUserBenefits(request):
+    if request.method == 'GET':
+        userId = request.GET.get('userId')
+        try:
+            userBenefitsList = apiQueries.getAllUserBenefitByUserId(userId)
+            if userBenefitsList is not None:
+                userBenefitsJson = serializers.serialize('json', userBenefitsList)
+                response = HttpResponse(userBenefitsJson, content_type='application/json')
+                return response
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiCompleteBenefit(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        benefitId = data.get('ben_code')
+        try:
+            benefitToEdit = apiQueries.getUserBenefit(userId, benefitId)
+            benefitToEdit.useben_state = "COMPLETE"
+            if apiQueries.saveUserBenefit(benefitToEdit):
+                return HttpResponse('Beneficio Completado correctamente')
+            else:
+                return HttpResponseNotFound()
         except modExceptions.apiException as e:
             return HttpResponse(e)
 
