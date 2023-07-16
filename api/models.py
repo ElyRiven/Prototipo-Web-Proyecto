@@ -77,6 +77,8 @@ class Place(models.Model):
     pla_city = models.CharField(max_length=50)
     pla_startdate = models.DateField()
     pla_enddate = models.DateField()
+    pla_latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    pla_longitude = models.DecimalField(max_digits=9, decimal_places=6)
     pro_code = models.ForeignKey('Product', models.DO_NOTHING, db_column='pro_code')
 
     class Meta:

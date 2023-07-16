@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
-from api.models import User, Role
+from api.models import User, Role, BenefitLog
 from api.utilsModule import modExceptions
 from api.utilsModule import queries as apiQueries
 from django.core import serializers
@@ -181,6 +181,25 @@ def apiCompleteBenefit(request):
             benefitToEdit.useben_state = "COMPLETE"
             if apiQueries.saveUserBenefit(benefitToEdit):
                 return HttpResponse('Beneficio Completado correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiSaveBenefitLog(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        benefitId = data.get('ben_code')
+        try:
+            benefitLogToSave = BenefitLog()
+            user = apiQueries.getUserById(userId)
+            benefit = apiQueries.getBenefitById(benefitId)
+            benefitLogToSave.use_code = user
+            benefitLogToSave.ben_code = benefit
+            benefitLogToSave.benlog_date = datetime.now().date()
+            if apiQueries.saveBenefitLog(benefitLogToSave):
+                return HttpResponse('Log de Beneficio guardado correctamente')
             else:
                 return HttpResponseNotFound()
         except modExceptions.apiException as e:

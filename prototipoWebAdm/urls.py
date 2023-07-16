@@ -79,4 +79,5 @@ urlpatterns = [
     path('api/savePoints/',apiViews.apiSavePoints, name='savePoints'),
     path('api/completeBenefit/',apiViews.apiCompleteBenefit, name='completeBenefit'),
     path('api/getUserBenefits/',apiViews.apiGetUserBenefits, name='getUserBenefits'),
+    path('api/saveBenefitLog/',apiViews.apiSaveBenefitLog, name='saveBenefitLog'),
 ]

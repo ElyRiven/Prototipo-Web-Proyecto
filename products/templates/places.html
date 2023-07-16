@@ -47,6 +47,8 @@
                                     <th scope="col">Ciudad</th>
                                     <th scope="col">Fecha Inicio</th>
                                     <th scope="col">Fecha Fin</th>
+                                    <th scope="col">Latitud</th>
+                                    <th scope="col">Longitud</th>
                                     <th scope="col">Opciones</th>
                                 </tr>
                             </thead>
@@ -59,6 +61,8 @@
                                     <td>{{ place.pla_city|title }}</td>
                                     <td>{{ place.pla_startdate|date:'Y-m-d' }}</td>
                                     <td>{{ place.pla_enddate|date:'Y-m-d' }}</td>
+                                    <td>{{ place.pla_latitude }}</td>
+                                    <td>{{ place.pla_longitude }}</td>
                                     <td>
                                         <div>
                                             <a href="{% url 'updatePlace' userId=user.use_code productId=product.pro_code placeId=place.pla_code %}"

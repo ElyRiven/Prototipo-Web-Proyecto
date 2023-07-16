@@ -27,6 +27,8 @@ def addPlace(request, userId, productId):
             endDate = datetime.strptime(request.POST['placeEndDate'], '%Y-%m-%d').date()
             if endDate <= startDate:
                 raise ValueError('La fecha de fin debe ser posterior a la fecha de inicio')
+            latitudePlace = checkLocation(request.POST['placeLatitude'])
+            longitudePlace = checkLocation(request.POST['placeLongitude'])
             newPlace = assignPlace(newPlace,
                                     request.POST['placeName'].upper(),
                                     request.POST['placeDescription'].upper(),
@@ -34,6 +36,8 @@ def addPlace(request, userId, productId):
                                     request.POST['placeCity'].upper(),
                                     startDate,
                                     endDate,
+                                    latitudePlace,
+                                    longitudePlace,
                                     product)
             placeQueries.savePlace(newPlace)
             url = reverse('places', kwargs={'userId': userId, 'productId': productId})
@@ -61,6 +65,8 @@ def editPlace(request, userId, productId, placeId):
             endDate = datetime.strptime(request.POST['placeEndDate'], '%Y-%m-%d').date()
             if endDate <= startDate:
                 raise ValueError('La fecha de fin debe ser posterior a la fecha de inicio')
+            latitudePlace = checkLocation(request.POST['placeLatitude'])
+            longitudePlace = checkLocation(request.POST['placeLongitude'])
             editedPlace = assignPlace(editedPlace,
                                     request.POST['placeName'].upper(),
                                     request.POST['placeDescription'].upper(),
@@ -68,6 +74,8 @@ def editPlace(request, userId, productId, placeId):
                                     request.POST['placeCity'].upper(),
                                     startDate,
                                     endDate,
+                                    latitudePlace,
+                                    longitudePlace,
                                     product)
             placeQueries.savePlace(editedPlace)
             url = reverse('places', kwargs={'userId': userId, 'productId': productId})
@@ -96,13 +104,31 @@ def deletePlace(request, userId, productId, placeId):
     except modExceptions.placeModuleError as e:
         return placeTemplate(request, template, user, product=product, error=str(e))
 
-def assignPlace(place, plaName, plaDescription, plaActivity, plaCity, placeStartDate, placeEndDate, product):
+def checkLocation(location):
+    locationCheck = location.replace(',', '.')
+    if not validateFloatLocation(locationCheck):
+        raise ValueError('La localizacion debe ser numérica y separada por punto')
+    locationCheck = float(locationCheck)
+    if len(str(locationCheck).split('.')[1]) > 6:
+        raise ValueError('La localizacion debe tener máximo 6 decimales')
+    return locationCheck
+
+def validateFloatLocation(location):
+    try:
+        float(location)
+        return True
+    except ValueError:
+        return False
+
+def assignPlace(place, plaName, plaDescription, plaActivity, plaCity, placeStartDate, placeEndDate, placeLatitude, placeLongitude, product):
     place.pla_name = plaName
     place.pla_description = plaDescription
     place.pla_activity = plaActivity
     place.pla_city = plaCity
     place.pla_startdate = placeStartDate
     place.pla_enddate = placeEndDate
+    place.pla_latitude = placeLatitude
+    place.pla_longitude = placeLongitude
     place.pro_code = product
     return place
 

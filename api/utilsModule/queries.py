@@ -1,4 +1,4 @@
-from api.models import User, Role, Benefit, UserProduct, Product, Country, Question, UserBenefit
+from api.models import User, Role, Benefit, UserProduct, Product, Country, Question, UserBenefit, BenefitLog
 from api.utilsModule import modExceptions
 import hashlib
 
@@ -104,3 +104,18 @@ def saveUserBenefit(updatedUserBenefit):
         return True;
     except UserBenefit.DoesNotExist:
         raise modExceptions.apiException('No se pudo actualizar el estado del beneficio')
+
+# Get Benefit by Id
+def getBenefitById(benefitId):
+    try:
+        return Benefit.objects.get(ben_code=benefitId)
+    except Benefit.DoesNotExist:
+        raise modExceptions.apiException('Beneficio no existe')
+
+# Save BenefitLog by UserId & BenefitId
+def saveBenefitLog(benefitLog):
+    try:
+        benefitLog.save()
+        return True;
+    except:
+        raise modExceptions.apiException('No se pudo guardar el log del beneficio')
