@@ -27,8 +27,8 @@ def addPlace(request, userId, productId):
             endDate = datetime.strptime(request.POST['placeEndDate'], '%Y-%m-%d').date()
             if endDate <= startDate:
                 raise ValueError('La fecha de fin debe ser posterior a la fecha de inicio')
-            latitudePlace = checkLocation(request.POST['placeLatitude'])
-            longitudePlace = checkLocation(request.POST['placeLongitude'])
+            latitudePlace = checkLatitudeLocation(request.POST['placeLatitude'])
+            longitudePlace = checkLongitudeLocation(request.POST['placeLongitude'])
             newPlace = assignPlace(newPlace,
                                     request.POST['placeName'].upper(),
                                     request.POST['placeDescription'].upper(),
@@ -65,8 +65,8 @@ def editPlace(request, userId, productId, placeId):
             endDate = datetime.strptime(request.POST['placeEndDate'], '%Y-%m-%d').date()
             if endDate <= startDate:
                 raise ValueError('La fecha de fin debe ser posterior a la fecha de inicio')
-            latitudePlace = checkLocation(request.POST['placeLatitude'])
-            longitudePlace = checkLocation(request.POST['placeLongitude'])
+            latitudePlace = checkLatitudeLocation(request.POST['placeLatitude'])
+            longitudePlace = checkLongitudeLocation(request.POST['placeLongitude'])
             editedPlace = assignPlace(editedPlace,
                                     request.POST['placeName'].upper(),
                                     request.POST['placeDescription'].upper(),
@@ -104,14 +104,27 @@ def deletePlace(request, userId, productId, placeId):
     except modExceptions.placeModuleError as e:
         return placeTemplate(request, template, user, product=product, error=str(e))
 
-def checkLocation(location):
-    locationCheck = location.replace(',', '.')
-    if not validateFloatLocation(locationCheck):
-        raise ValueError('La localizacion debe ser numérica y separada por punto')
-    locationCheck = float(locationCheck)
-    if len(str(locationCheck).split('.')[1]) > 6:
-        raise ValueError('La localizacion debe tener máximo 6 decimales')
-    return locationCheck
+def checkLatitudeLocation(location):
+    latitudeCheck = location.replace(',', '.')
+    if not validateFloatLocation(latitudeCheck):
+        raise ValueError('La latitud debe ser numérica y separada por punto')
+    latitudeCheck = float(latitudeCheck)
+    if abs(latitudeCheck) > 90:
+        raise ValueError(f'El valor entero debe estar en el rango [-90, +90]')
+    if len(str(latitudeCheck).split('.')[1]) > 6:
+        raise ValueError('La latitud debe tener máximo 6 decimales')
+    return latitudeCheck
+
+def checkLongitudeLocation(location):
+    longitudeCheck = location.replace(',', '.')
+    if not validateFloatLocation(longitudeCheck):
+        raise ValueError('La longitud debe ser numérica y separada por punto')
+    longitudeCheck = float(longitudeCheck)
+    if abs(longitudeCheck) > 180:
+        raise ValueError(f'El valor entero debe estar en el rango [-180, +180]')
+    if len(str(longitudeCheck).split('.')[1]) > 6:
+        raise ValueError('La longitud debe tener máximo 6 decimales')
+    return longitudeCheck
 
 def validateFloatLocation(location):
     try:

@@ -105,7 +105,7 @@ def checkPrice(price):
     if len(str(priceCheck).split('.')[1]) > 2:
         raise ValueError('El precio debe tener máximo 2 decimales')
     return priceCheck
-   
+
 def validateFloatPrice(price):
     try:
         float(price)
