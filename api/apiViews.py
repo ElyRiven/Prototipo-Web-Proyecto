@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
-from api.models import User, Role, BenefitLog
+from api.models import User, Role, BenefitLog, Appointment
 from api.utilsModule import modExceptions
 from api.utilsModule import queries as apiQueries
 from django.core import serializers
@@ -50,9 +50,6 @@ def apiUser(request):
             password = apiQueries.encryptPassword(data.get('use_password'))
         else:
             password = None
-        points = data.get('use_points')
-        section = data.get('use_bensection')
-        firstLogin = datetime.strptime(data.get('use_firstlogin'), '%Y-%m-%d').date()
         role = data.get('rol_code')
         try:
             userToEdit = apiQueries.getUserById(userId)
@@ -63,11 +60,8 @@ def apiUser(request):
                                     mail, 
                                     idNumber, 
                                     phone, 
-                                    getRole, 
-                                    section,
-                                    password=password,
-                                    points=points, 
-                                    firstLogin=firstLogin)
+                                    getRole,
+                                    password=password,)
             if apiQueries.saveUser(userToEdit):
                 return HttpResponse('Usuario actualizado correctamente')
         except modExceptions.apiException as e:
@@ -205,18 +199,163 @@ def apiSaveBenefitLog(request):
         except modExceptions.apiException as e:
             return HttpResponse(e)
 
-def assignUser(user, firstName, lastName, email, idNumber, phone, role, section, password=None, points=None, firstLogin=None):
+def apiGetEndedTrips(request):
+    if request.method == 'GET':
+        userId = request.GET.get('userId')
+        try:
+            endedTrips = apiQueries.getEndedTrips(userId)
+            endedProducts = []
+            for trip in endedTrips:
+                endedProducts.append(apiQueries.getProductById(trip.pro_code.pro_code))
+            if endedProducts is not None:
+                endedProductsJson = serializers.serialize('json', endedProducts)
+                response = HttpResponse(endedProductsJson, content_type='application/json')
+                return response
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiGetEndedTripItinerary(request):
+    if request.method == 'GET':
+        productId = request.GET.get('productId')
+        try:
+            placeList = apiQueries.getAllPlacesByProductId(productId)
+            if placeList is not None:
+                itineraryJson = serializers.serialize('json', placeList)
+                response = HttpResponse(itineraryJson, content_type='application/json')
+                return response
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiGetAllSellingProducts(request):
+    if request.method == 'GET':
+        try:
+            productList = apiQueries.getAllSellingProducts()
+            if productList is not None:
+                itineraryJson = serializers.serialize('json', productList)
+                response = HttpResponse(itineraryJson, content_type='application/json')
+                return response
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiSaveAppointment(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        productId = data.get('pro_code')
+        comment = data.get('app_comment')
+        appointmentType = data.get('app_type')
+        try:
+            appointmentToSave = Appointment()
+            user = apiQueries.getUserById(userId)
+            product = apiQueries.getProductById(productId)
+            appointmentToSave.use_code = user
+            appointmentToSave.pro_code = product
+            appointmentToSave.app_comment = comment
+            appointmentToSave.app_type = appointmentType
+            if apiQueries.saveAppointment(appointmentToSave):
+                return HttpResponse('Cita guardada correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiSetFirstLogin(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        firstLogin = datetime.strptime(data.get('use_firstlogin'), '%Y-%m-%d').date()
+        try:
+            user = apiQueries.getUserById(userId)
+            user.use_firstlogin = firstLogin
+            if apiQueries.saveUser(user):
+                return HttpResponse('Fecha de primer login guardada correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiResetBenefits(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        try:
+            userBenefitList = apiQueries.getAllUserBenefitByUserId(userId)
+            for userBenefit in userBenefitList:
+                userBenefit.useben_state = 'INCOMPLETE'
+                apiQueries.saveUserBenefit(userBenefit)
+            return HttpResponse('Beneficios reiniciados correctamente')
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiGetPendingTrip(request):
+    if request.method == 'GET':
+        userId = request.GET.get('userId')
+        try:
+            userCheck = apiQueries.getPendingUserProduct(userId)
+            if userCheck is not None:
+                userCheckJson = serializers.serialize('json', [userCheck])
+                response = HttpResponse(userCheckJson, content_type='application/json')
+                return response                
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponseNotFound(e)
+
+def apiEndTrip(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        try:
+            userProduct = apiQueries.getUserProductByUserId(userId)
+            userProduct.usepro_state = 'ENDED'
+            if apiQueries.saveUserProduct(userProduct):
+                return HttpResponse('Viaje terminado correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiConfirmTrip(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        try:
+            userProduct = apiQueries.getPendingUserProduct(userId)
+            userProduct.usepro_state = 'CONFIRMED'
+            if apiQueries.saveUserProduct(userProduct):
+                return HttpResponse('Viaje confirmado correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def apiCancelTrip(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        try:
+            userProduct = apiQueries.getPendingUserProduct(userId)
+            userProduct.usepro_state = 'CANCELED'
+            if apiQueries.saveUserProduct(userProduct):
+                return HttpResponse('Viaje cancelado correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
+def assignUser(user, firstName, lastName, email, idNumber, phone, role, password=None):
     user.use_firstname = firstName.upper()
     user.use_lastname = lastName.upper()
     user.use_email = email.upper()
     user.use_idnumber = idNumber
     user.use_phonenumber = phone
     user.rol_code = role
-    user.use_bensection = section
     if password is not None:
         user.use_password = password
-    if points is not None:
-        user.use_points = points
-    if firstLogin is not None:
-        user.use_firstlogin = firstLogin
     return user

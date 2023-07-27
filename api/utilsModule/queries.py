@@ -1,4 +1,4 @@
-from api.models import User, Role, Benefit, UserProduct, Product, Country, Question, UserBenefit, BenefitLog
+from api.models import User, Role, Benefit, UserProduct, Product, Country, Question, UserBenefit, BenefitLog, Place
 from api.utilsModule import modExceptions
 import hashlib
 
@@ -62,6 +62,14 @@ def getUserProductByUserId(userId):
     except UserProduct.DoesNotExist:
         raise modExceptions.apiException('El usuario no tiene viajes en progreso')
 
+# Get UserProduct with state "PENDING"
+def getPendingUserProduct(userId):
+    try:
+        userProduct = UserProduct.objects.get(use_code=userId, usepro_state='PENDING')
+        return userProduct
+    except UserProduct.DoesNotExist:
+        raise modExceptions.apiException('El usuario no tiene viajes pendientes')
+
 # Get Product by Id
 def getProductById(productId):
     try:
@@ -119,3 +127,40 @@ def saveBenefitLog(benefitLog):
         return True;
     except:
         raise modExceptions.apiException('No se pudo guardar el log del beneficio')
+
+# Get all UserProduct with Status "ENDED"
+def getEndedTrips(userId):
+    try:
+        return UserProduct.objects.filter(use_code=userId, usepro_state='ENDED')
+    except UserProduct.DoesNotExist:
+        raise modExceptions.apiException('No existen viajes finalizados')
+    
+# Get all Places by ProductId
+def getAllPlacesByProductId(productId):
+    try:
+        return Place.objects.filter(pro_code=productId)
+    except Place.DoesNotExist:
+        raise modExceptions.apiException('No existen lugares para el producto seleccionado')
+
+# Get all Products with State "SELLING"
+def getAllSellingProducts():
+    try:
+        return Product.objects.filter(pro_state='SELLING')
+    except Product.DoesNotExist:
+        raise modExceptions.apiException('No existen productos en venta')
+
+# Save Appointment
+def saveAppointment(appointment):
+    try:
+        appointment.save()
+        return True
+    except:
+        raise modExceptions.apiException('Error al guardar la cita')
+
+# Save UserProduct
+def saveUserProduct(userProduct):
+    try:
+        userProduct.save()
+        return True
+    except:
+        raise modExceptions.apiException('Error al guardar el viaje')
