@@ -36,9 +36,9 @@
                     <form class="form-horizontal form-material mx-2" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label class="col-md-12">Descripcion</label>
+                            <label class="col-md-12">Descripción</label>
                             <div class="col-md-12">
-                                <input name="questionDescription" type="text" placeholder="Descripcion de la pregunta"
+                                <input name="questionDescription" type="text" placeholder="Descripción de la pregunta"
                                     class="form-control form-control-line" maxlength="100" 
                                     value="{{ selectedQuestion.que_description|title }}" required>
                             </div>

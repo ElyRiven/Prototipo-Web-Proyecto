@@ -43,6 +43,8 @@ def getUserProduct(userId, productId):
         return UserProduct.objects.get(use_code=userId, pro_code=productId)
     except UserProduct.DoesNotExist:
         return None
+    except UserProduct.MultipleObjectsReturned:
+        raise modExceptions.tripModuleError('El usuario tiene varios registros para el mismo producto')
 
 # Create UserProduct record
 def saveUserProduct(record):
