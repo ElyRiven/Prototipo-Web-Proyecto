@@ -90,4 +90,5 @@ urlpatterns = [
     path('api/endTrip/',apiViews.apiEndTrip, name='endTrip'),
     path('api/confirmTrip/',apiViews.apiConfirmTrip, name='confirmTrip'),
     path('api/cancelTrip/',apiViews.apiCancelTrip, name='cancelTrip'),
+    path('api/restartPoints/',apiViews.apiRestartPoints, name='restartPoints'),
 ]

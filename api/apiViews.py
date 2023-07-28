@@ -349,6 +349,20 @@ def apiCancelTrip(request):
         except modExceptions.apiException as e:
             return HttpResponse(e)
 
+def apiRestartPoints(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        userId = data.get('use_code')
+        try:
+            user = apiQueries.getUserById(userId)
+            user.use_points = 0
+            if apiQueries.saveUser(user):
+                return HttpResponse('Puntos reiniciados correctamente')
+            else:
+                return HttpResponseNotFound()
+        except modExceptions.apiException as e:
+            return HttpResponse(e)
+
 def assignUser(user, firstName, lastName, email, idNumber, phone, role, password=None):
     user.use_firstname = firstName.upper()
     user.use_lastname = lastName.upper()
