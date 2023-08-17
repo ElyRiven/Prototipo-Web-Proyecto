@@ -62,9 +62,9 @@
                         <div class="form-group">
                             <label class="col-md-12">Identificación</label>
                             <div class="col-md-12">
-                                <input name="userIdNumber" type="text" placeholder="Cedula"
-                                    class="form-control form-control-line" pattern="[0-9]+"
-                                    title="Por favor, ingresar solo números" maxlength="10"
+                                <input name="userIdNumber" type="text" placeholder="Identificación"
+                                    class="form-control form-control-line" pattern="[A-Za-z0-9]+"
+                                    title="Por favor, ingresar una identificación válida" maxlength="10"
                                     value="{{ userToEdit.use_idnumber|title }}" required>
                             </div>
                         </div>
