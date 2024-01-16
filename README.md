@@ -2,8 +2,8 @@
 
 ## Technologies used
 
-![DJango](https://img.shields.io/badge/DJango-0C4B33?style=for-the-badge&logo=django&logoColor=0C4B33&labelColor=ffffff)
-![Postgres](https://img.shields.io/badge/PostgreSQL-31648C?style=for-the-badge&logo=postgresql&logoColor=31648C&labelColor=ffffff)
+[![DJango](https://img.shields.io/badge/DJango-0C4B33?style=for-the-badge&logo=django&logoColor=0C4B33&labelColor=ffffff)](https://www.djangoproject.com/)
+[![Postgres](https://img.shields.io/badge/PostgreSQL-31648C?style=for-the-badge&logo=postgresql&logoColor=31648C&labelColor=ffffff)](https://www.postgresql.org/)
 
 ## Web Design
 [![Canva Design](https://img.shields.io/badge/Web_Design-31648C?style=for-the-badge&logo=canva&logoColor=31648C&labelColor=white)](https://www.canva.com/design/DAFloE_4i28/Vh63LpHFy3p1EVC_CLfFkA/view?utm_content=DAFloE_4i28&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
