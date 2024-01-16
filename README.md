@@ -1,4 +1,4 @@
-![TravelHunterLogo](static\Logo.png)
+![TravelHunterLogo](./static/Logo.png)
 
 ## Technologies used
 
@@ -26,4 +26,4 @@ There is also an API developed to send and update specific data through the mobi
 The mobile app is developed in Flutter and can be found in this [repository](https://github.com/ElyRiven/Prototipo-Movil-Proyecto)
 
 ## Database Schema
-![DB schema](static\DB_Diagram.png)
+![DB schema](./static/DB_Diagram.png)
