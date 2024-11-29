@@ -12,7 +12,11 @@
 
 Web project developed for managing travel agencies and their clients. It is a prototype app developed to manage a DB with the data of the users, products, active travels and benefits offered by the agency.
 
- The web app implements 4 main modules:
+ The web app implements these main modules:
+
+- __Login__: screen to log in to the app with admin credentials.
+  
+  ![login screen](./static/login.png "Login Screen")
 
 - __Users Module__: manage user's data in the database.
 
