@@ -17,7 +17,7 @@ Web project developed for managing travel agencies and their clients. It is a pr
 - __Login__: screen to log in to the app with admin credentials.
   
   ![login screen](./static/login.png "Login Screen")
-
+---
 - __Users Module__: manage user's data in the database.
 
 	![user screen](./static/users.png "Users Screen")
